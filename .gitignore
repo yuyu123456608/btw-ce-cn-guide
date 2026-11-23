@@ -1,5 +1,5 @@
-# 只发布 dist/ 里的 5 项（index.html / items.js / guides.js / icons/ / og.png）
-# 站点根的源文件是「制作现场」，不进仓库：Pages 从 /dist 出站，
+# 只发布 docs/ 里的 5 项（index.html / items.js / guides.js / icons/ / og.png）
+# 站点根的源文件是「制作现场」，不进仓库：Pages 从 /docs 出站，
 # 仓库公开时根目录的文件会变成可下载的 raw URL，没必要重复公开一份。
 
 /index.html
@@ -19,7 +19,7 @@ _backup_原始/
 *.txt
 *.md
 *.json
-!dist/README.md
+!docs/README.md
 
 # 备份与探针
 _items_before_*.js
@@ -28,3 +28,5 @@ _*.html
 _*.js
 _*.bin
 _edgep*/
+
+
