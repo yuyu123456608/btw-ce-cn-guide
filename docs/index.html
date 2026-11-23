@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- dist-built: 2026-11-23T16:14:06Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
+<!-- dist-built: 2026-11-23T16:17:22Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>德爷生存 · Better Than Wolves 中文图鉴站</title>
@@ -323,6 +323,12 @@ select{
 .mat-list{list-style:none;display:flex;flex-direction:column;gap:6px}
 .mat-list li{display:flex;align-items:center;gap:8px;font-size:13px;color:#C7CDD2;background:var(--rock-d);padding:7px 10px;border-left:4px solid var(--grass);word-break:break-word}
 .mat-list li b{font-family:var(--px);font-size:12px;color:var(--diamond)}
+/* 材料名能点：图鉴里有对应条目才可点，没有的黑字说明「原版物品 / 未建卡」，不做死链 */
+.mat-link{border:0;background:none;padding:0;font:inherit;color:#CFE9EA;text-align:left;
+  text-decoration:underline;text-decoration-color:#5F8F90;text-decoration-thickness:2px;
+  text-underline-offset:3px;cursor:pointer}
+.mat-link:hover{color:var(--diamond);text-decoration-color:var(--diamond)}
+.mat-plain{color:#9AA3AA}
 .proc-list{list-style:none;display:flex;flex-direction:column;gap:5px}
 .proc-list li{font-size:13px;color:#C7CDD2;background:var(--rock-d);padding:7px 10px;border-left:4px solid var(--diamond);word-break:break-word}
 .proc-note{margin-top:8px;font-size:11.5px;color:#8A8F91;line-height:1.7}
@@ -333,6 +339,9 @@ select{
 /* 无序合成：不画 9 宫格，改成一行材料条，避免视觉上宣称「排布有意义」 */
 .craft-grid.shapeless{display:flex;flex-wrap:wrap;grid-template-columns:none;grid-template-rows:none;background:none;border:none;padding:0;gap:6px;max-width:320px}
 .craft-grid.shapeless .sm-chip{font-size:12.5px;color:#C7CDD2;background:var(--rock-d);border:2px solid #000;border-left:4px solid var(--grass);padding:6px 9px}
+/* 网格格子里有对应条目也能点，同材料清单一套语义 */
+.cell.clickable{cursor:pointer}
+.cell.clickable:hover{outline:2px solid var(--diamond);outline-offset:-2px}
 .pending{display:block;margin-top:8px;font-size:12px;color:#C9A227;border:2px dashed #4A4433;padding:6px 10px;background:rgba(201,162,39,.06);line-height:1.7}
 .sheet-foot{padding:0 18px 4px;font-size:11.5px;color:#7D868D;line-height:1.7}
 
@@ -800,6 +809,13 @@ select{
   }
 
   document.addEventListener('click', function (e) {
+    /* 材料名点击：在弹层里就地换条目，不关闭再重开 */
+    var m = e.target.closest('[data-item]');
+    if (m) {
+      e.preventDefault();
+      var id = m.getAttribute('data-item');
+      if (id) { openItem(id, true); return; }
+    }
     var t = e.target.closest('[data-go]');
     if (t) { e.preventDefault(); route(t.getAttribute('data-go'), true); }
   });
@@ -969,11 +985,27 @@ select{
      ====================================================================== */
   var modal = $('#modal');
 
-  /* 材料名 -> 物品：先剥离「（…）」与「×N」再按中文名匹配，匹配不到返回 null */
+  /* 材料名 -> 物品：先剥离「（…）」与「×N」再按中文名匹配，匹配不到返回 null。
+     mats 里的「鞣制皮革类」「木板类」是 Tag 口径，去掉尾字「类」再试一次，
+     仍匹配不到才算「图鉴无独立条目」（原版物品 / 未建卡 / Java 类名）。 */
   function matItem(name) {
     if (!name) return null;
     var key = cleanMat(name);
-    return byCn[key] || byCn[String(name).trim()] || null;
+    var hit = byCn[key] || byCn[String(name).trim()] || null;
+    if (!hit && /类$/.test(key)) hit = byCn[key.slice(0, -1)] || null;
+    return hit;
+  }
+
+  /* 材料名渲染：图鉴里有条目就出可点的名字，没有就出灰字并说明原因。
+     「×3」这类数量后缀跟着文字一起走，但不参与匹配。 */
+  function matHTML(name, cls) {
+    var hit = matItem(name);
+    var label = esc(name);
+    if (!hit) {
+      return '<span class="' + cls + ' mat-plain" title="该材料在图鉴里没有独立条目">' + label + '</span>';
+    }
+    return '<button type="button" class="' + cls + ' mat-link" data-item="' + esc(hit.id) +
+      '" title="打开「' + esc(hit.cn) + '」的条目">' + label + '</button>';
   }
 
   function cellHTML(name) {
@@ -982,7 +1014,8 @@ select{
     var c = hit ? catColor(hit.cat) : '#33C0C4';
     /* 匹配不到时回落为该材料首字，保证格子不留空 */
     var ch = (hit && hit.icon) ? hit.icon : (cleanMat(name).charAt(0) || '?');
-    return '<div class="cell filled" title="' + esc(name) + '">' +
+    return '<div class="cell filled' + (hit ? ' clickable' : '') + '"' + (hit ? ' data-item="' + esc(hit.id) + '"' : '') +
+      ' title="' + esc(name) + '">' +
       '<span class="ico sm" style="background:' + c + ';color:#0B0D0F">' + esc(ch) + '</span>' +
     '</div>';
   }
@@ -1022,7 +1055,7 @@ select{
       var strip = (it.mats && it.mats.length) ? it.mats : ['待补充'];
       $('#modalGrid').className = 'craft-grid shapeless';
       $('#modalGrid').innerHTML = strip.map(function (m) {
-        return '<span class="sm-chip">' + esc(m) + '</span>';
+        return matHTML(m, 'sm-chip');
       }).join('');
     } else {
       $('#modalGrid').className = 'craft-grid';
@@ -1044,7 +1077,7 @@ select{
     /* 无序合成时材料条已经把「名字 + ×N」列全了，右侧清单列不再重复一遍 */
     document.querySelector('.mats-col').style.display = (shapeless || !mats.length) ? 'none' : '';
     $('#modalMats').innerHTML = mats.map(function (m, i) {
-      return '<li><b>' + String(i + 1).padStart(2, '0') + '</b><span>' + esc(m) + '</span></li>';
+      return '<li><b>' + String(i + 1).padStart(2, '0') + '</b>' + matHTML(m, 'span') + '</li>';
     }).join('');
 
     $('#originBlock').style.display = it.origin ? '' : 'none';
