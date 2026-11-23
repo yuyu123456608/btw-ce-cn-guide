@@ -545,7 +545,7 @@ window.BTW_ITEMS = [
     noGrid:true, img:'icons/steel-nugget.png',
     grid:null,
     effect:'灵魂锻造钢的零碎回收形态，可再炼回钢。',
-    proc:['坩埚：宽头箭头头 → 钢粒 ×3', '坩埚：不透明装饰方块 → 钢粒 ×12', '另有 1 条同类加工（宽头箭头 → 钢粒 ×3）'],
+    proc:['坩埚：宽头箭头头 → 钢粒 ×3', '坩埚：旧灵魂钢杆 → 钢粒 ×12', '另有 1 条同类加工（宽头箭头 → 钢粒 ×3）'],
     obtain:'坩埚（猛火）：钢制零件回收获得（见上方「加工配方」）。' },
 
   { id:'strap', cn:'皮革带', en:'Strap', alias:['绑带'], pinyin:'pi ge dai', cat:'misc', icon:'带',
@@ -621,11 +621,11 @@ window.BTW_ITEMS = [
 
   { id:'white-cobble-stairs', cn:'白圆石楼梯', en:'White Cobble Stairs', alias:['白圆石阶梯'], pinyin:'bai yuan shi lou ti', cat:'block', icon:'梯',
     img:'icons/white-cobble-stairs.png',
-    grid:[['不透明装饰方块',null,null],['不透明装饰方块','不透明装饰方块',null],['不透明装饰方块','不透明装饰方块','不透明装饰方块']], mats:['不透明装饰方块'], effect:'白圆石装饰楼梯。', obtain:'合成：aestheticOpaque×6（由 class 文件反编译得到，排布见网格）' },
+    grid:[['白圆石',null,null],['白圆石','白圆石',null],['白圆石','白圆石','白圆石']], mats:['白圆石'], effect:'白圆石装饰楼梯。', obtain:'合成：白圆石×6（由 class 文件反编译得到，排布见网格）' },
 
   { id:'white-stone-stairs', cn:'白石楼梯', en:'White Stone Stairs', alias:['白石阶梯'], pinyin:'bai shi lou ti', cat:'block', icon:'梯',
     img:'icons/white-stone-stairs.png',
-    grid:[['不透明装饰方块',null,null],['不透明装饰方块','不透明装饰方块',null],['不透明装饰方块','不透明装饰方块','不透明装饰方块']], mats:['不透明装饰方块'], effect:'白石装饰楼梯。', obtain:'合成：whiteStone×6（由 class 文件反编译得到，排布见网格）' },
+    grid:[['白石',null,null],['白石','白石',null],['白石','白石','白石']], mats:['白石'], effect:'白石装饰楼梯。', obtain:'合成：白石×6（由 class 文件反编译得到，排布见网格）；另有 1 条：白圆石×6 → 同款台阶的圆石外观（meta 8）' },
 
   { id:'wicker-pane', cn:'柳条板', en:'Wicker Pane', alias:['柳条窗板'], pinyin:'liu tiao ban', cat:'block', icon:'板',
     noGrid:true, img:'icons/wicker-pane.png', imgApprox:true, inherit:'wicker', imgApproxFrom:'柳条',
@@ -633,7 +633,7 @@ window.BTW_ITEMS = [
 
   { id:'wicker-slab', cn:'柳条台阶', en:'Wicker Slab', alias:['柳条半砖'], pinyin:'liu tiao tai jie', cat:'block', icon:'阶',
     img:'icons/wicker-slab.png', imgApprox:true, inherit:'wicker', imgApproxFrom:'柳条',
-    grid:[['柳条块','柳条块',null],[null,null,null],[null,null,null]], mats:['柳条块'], effect:'装饰用台阶，用于棚屋与仓库。', proc:['锯：柳条块 → 柳条台阶 ×2','锯：不透明装饰方块 → 柳条台阶 ×2'], obtain:'合成：柳条板×2（由 class 文件反编译得到，排布见网格）' },
+    grid:[['柳条块','柳条块',null],[null,null,null],[null,null,null]], mats:['柳条块'], effect:'装饰用台阶，用于棚屋与仓库。', proc:['锯：柳条块 → 柳条台阶 ×2','锯：旧柳条块 → 柳条台阶 ×2'], obtain:'合成：柳条板×2（由 class 文件反编译得到，排布见网格）' },
 
   { id:'wind-mill', cn:'风车', en:'Windmill', alias:['风力机'], pinyin:'feng che', cat:'metal', icon:'风',
     img:'icons/wind-mill.png',
