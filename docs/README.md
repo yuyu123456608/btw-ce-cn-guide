@@ -26,8 +26,8 @@ Minecraft 1.6.4 · Better Than Wolves Community Edition **3.1.1** 的中文物�
 
 ## 说明
 
-站点使用 hash 路由（`#/item/xxx`），无需服务器端路由配置，可直接静态托管。
-条目详情页共享同一张分享卡片，这是 hash 路由的固有行为。
+站点为单页应用，视图用 `#home` / `#items` / `#recipes` / `#guides` 切换，无需服务器端路由配置；
+条目详情以弹层呈现，不存在按条目划分的独立地址。
 
 ## 免责
 
