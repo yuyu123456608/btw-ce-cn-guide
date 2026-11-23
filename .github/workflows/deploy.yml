@@ -1,0 +1,69 @@
+name: build-verify-deploy
+
+# 只要源进 main，就走一条确定的链路：构建 → 32 条断言 → 发布 artifact → 部署 → 线上 smoke。
+# 关键点：校验不过就不部署。以前「本地是过的」是唯一保障，仓库存的是 143 个构建副本；
+# 现在仓库只存源，产物由这里生成，线上是否存在由 smoke 逐个 URL 证明。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 构建 docs/
+        run: node tools/build-dist.js --user=${{ github.repository_owner }} --repo=${{ github.event.repository.name }}
+
+      - name: 校验 32 条断言
+        run: node tools/verify.js
+
+      - name: 上传 Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+  smoke:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 线上逐个 URL 核对（CDN 有延迟，最多重试 10 次）
+        env:
+          BASE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+        run: |
+          for i in $(seq 1 10); do
+            echo "第 $i 次尝试：$BASE"
+            if node tools/smoke.js "$BASE"; then exit 0; fi
+            sleep 10
+          done
+          echo "smoke 连续 10 次未通过" >&2
+          exit 1

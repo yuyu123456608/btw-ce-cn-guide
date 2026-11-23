@@ -1,0 +1,57 @@
+{
+  "_note": "代码字段名 → 站点 id 的别名表。apply-machines.js 按产出字段反查站点条目时会先查这里，避免字段名与站内英文名/中文名拼写不一致造成的假阴性（漏配方）。新增条目时如果字段名和站点英文名差一个字母以上，请补到这里，并在 ambiguous 里说明不能靠名字反查的原因。",
+  "fieldToId": {
+    "plateHelmet": "plate-helm",
+    "plateBreastplate": "plate-breastplate",
+    "plateLeggings": "plate-leggings",
+    "plateBoots": "plate-boots",
+    "coalDust": "coal-dust",
+    "ironChunk": "iron-chunk",
+    "baitedFishingRod": "baited-fishing-rod",
+    "rottenFleshBlock": "block-of-flesh",
+    "soulforgedSteelBlock": "block-of-sfs",
+    "bloodWoodLog": "blood-wood",
+    "bowDrill": "bow-drill",
+    "broadheadArrow": "broadhead-arrow",
+    "cookedMutton": "cooked-mutton",
+    "corpseEye": "corpse-eye",
+    "hamAndEggs": "ham-and-eggs",
+    "rawKebab": "kebab",
+    "rawMushroomOmelet": "mushroom-omelet",
+    "rawMysteryMeat": "mystery-meat",
+    "porkDinner": "pork-dinner",
+    "rawCheval": "raw-cheval",
+    "rawEgg": "raw-egg",
+    "rottenArrow": "rotted-arrow",
+    "rawScrambledEggs": "scrambled-egg",
+    "haft": "shaft",
+    "sharpStone": "sharp-stone",
+    "soulDust": "soul-dust",
+    "soulFlux": "soul-flux",
+    "soulUrn": "soul-urn",
+    "steakAndPotatoes": "steak-and-potatoes",
+    "tannedLeatherHelmet": "tanned-leather-cap",
+    "tannedLeatherLeggings": "tanned-leather-pants",
+    "steelAxe": "axe-refined",
+    "cookedWolfChop": "cooked-wolfchop",
+    "steelHoe": "hoe-refined",
+    "rawLiver": "liver-of-the-beast",
+    "steelPickaxe": "pickaxe-refined",
+    "steelShovel": "shovel-refined",
+    "slatsPane": "slats",
+    "leatherStrap": "strap",
+    "steelSword": "sword-refined",
+    "tannedLeatherChest": "tanned-leather-tunic",
+    "woodenBlade": "wood-blade"
+  },
+  "ambiguous": [
+    {
+      "field": "brick",
+      "why": "BTWBlocks.brick 在 3×3 表里出现 3 次，是「砌窑用的材料」，不是产出。按字段名反查会一直命中，必须先看产出位。"
+    },
+    {
+      "field": "planks",
+      "why": "血木木板的锯配方产出 token 写作 planks + stub，不写 bloodWoodPlanks，所以不能靠 bloodWood/planks 字段名匹配，要认 addSawRecipe 的 out=3。"
+    }
+  ]
+}

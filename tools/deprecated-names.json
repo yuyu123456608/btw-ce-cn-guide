@@ -1,0 +1,16 @@
+{
+ "_note": "历史旧名黑名单：这些写法已经在站点里被淘汰，任何字段（cn/effect/obtain/proc/mats/grid）里再次出现都算错。allowIn 里的位置除外（目前只有 alias：旧名作为别名保留是有意为之，用于搜得到）。新增一条即永久生效，verify 第 24 条与 site-check 都会检查。",
+ "generated": "2026-11-23",
+ "entries": [
+  { "old": "棉垫", "new": "衬垫", "reason": "padding 卡官方 cn 是「衬垫」，棉垫从未存在", "allowIn": [] },
+  { "old": "锁甲片", "new": "锁子甲", "reason": "旧译名，站内用「锁子甲」(en Mail)", "allowIn": [] },
+  { "old": "螺旋桨", "new": "螺杆", "reason": "旧译名，站内用「螺杆」(screw)", "allowIn": [] },
+  { "old": "下界rack", "new": "地狱岩", "reason": "中英混写错名，材料是原版地狱岩方块", "allowIn": [] },
+  { "old": "灵魂通量", "new": "灵魂助熔剂", "reason": "soul-flux 卡 cn 为「灵魂助熔剂」；旧名只作为 alias 保留", "allowIn": ["alias"] },
+  { "old": "休眠灵魂锻造炉", "new": "沉睡灵魂锻造炉", "reason": "dormant-soulforge 卡 cn 为「沉睡灵魂锻造炉」；旧名只作为 alias 保留", "allowIn": ["alias"] }
+ ],
+ "excluded": [
+  { "name": "灵魂钢锭", "why": "不是旧名：它是 soulforged-steel 卡的正式 alias，站内 14 处 proc/mats 都靠它指到卡，黑名单会误伤" },
+  { "name": "木板", "why": "「木板」是原版木板与「木板类」Tag 的合法短名，单独出现并不总等于血木板，无法零噪声判定" }
+ ]
+}

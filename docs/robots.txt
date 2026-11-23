@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://yuyu123456608.github.io/btw-ce-cn-guide/sitemap.xml

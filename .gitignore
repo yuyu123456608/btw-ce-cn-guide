@@ -1,39 +1,31 @@
-# 只发布 docs/ 里的 5 项（index.html / items.js / guides.js / icons/ / og.png）
-# 站点根的源文件是「制作现场」，不进仓库：Pages 从 /docs 出站，
-# 仓库公开时根目录的文件会变成可下载的 raw URL，没必要重复公开一份。
+# 仓库只存「源 + 校验器」，构建产物不进库。
+# 部署方式：GitHub Actions 里 build → verify（32 条全过）→ 上传 docs/ 作为 Pages artifact → 部署 → smoke。
+# 这样一条数据的改动只产生一行 diff，不会再多出 143 个构建副本。
 
-/index.html
-/items.js
-/guides.js
-/og.png
-/icons/
-/fonts/
+# —— 构建产物 ——
+/docs/
 
-# 本地工作产物：反编译输出、贴图池、备份、探针截图
-tools/
-fontwork/
-_probe/
-_sf/
-_rl/
-_backup_原始/
+# —— 制作现场：反编译输出、贴图池、探针、备份、中间数据 ——
+/_*
+/tools/*
+!/tools/verify.js
+!/tools/build-dist.js
+!/tools/texpool-index.js
+!/tools/texpool-index.json
+!/tools/name-table.json
+!/tools/field-aliases.json
+!/tools/deprecated-names.json
+!/tools/subtype-map.json
+!/tools/font-charset.txt
+!/tools/font-subset.py
+!/tools/smoke.js
 
-# 反编译与证据文本（README.md 例外：它是发布物的一部分）
-*.txt
-*.md
-*.json
-!/README.md
-!docs/README.md
-# 字体许可必须随字体发布（OFL-1.1 要求），文档类的 *.txt 通配不能把它挡掉
-!docs/fonts/OFL.txt
-# robots.txt 同样是发布物：*.txt 通配会把它挡在仓库外，线上直接 404
-!docs/robots.txt
-
-# 备份与探针
+# 备份与探针截图（本地随手产物）
 _items_before_*.js
-_*.png
-_*.html
-_*.js
-_*.bin
-_edgep*/
 
-
+# 根目录的制作现场（证据文本、解析产物、字体下载包）：只留 README.md 作为仓库门面
+/*.txt
+/*.json
+/*.md
+!/README.md
+/fontwork/

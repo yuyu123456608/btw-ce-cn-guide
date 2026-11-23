@@ -1,0 +1,12 @@
+{
+ "_note": "子名→meta 对齐表：probe 1（tools/probe-subnames.js）从字节码 switch 分支解出。只解决「该用哪个名字/编号」，不解决「有没有配方」。四条均无产出证据（recipes-full / machines-full 零命中），故留归档，凭此表待后续找到产出位再连同 meta 转正。",
+ "generated": "2026-11-23",
+ "source": "tools/probe-subnames.json",
+ "entries": [
+  { "id": "chopping-block",        "field": "aestheticOpaque",      "meta": 13, "blocked": "recipes-full 0 命中 / machines-full 0 命中" },
+  { "id": "bloody-chopping-block", "field": "aestheticOpaque",      "meta": 12, "blocked": "recipes-full 0 命中 / machines-full 0 命中" },
+  { "id": "blood-wood-sapling",    "field": "aestheticVegetation",  "meta": 2,  "blocked": "machines-full 仅一条 aestheticVegetation 植被方块行，不能断定是血木树苗" },
+  { "id": "packed-earth-slab",     "field": "slabDirt",             "meta": 3,  "blocked": "recipes-full 0 命中 / machines-full 0 命中" }
+ ],
+ "note_slabDirt": "slabDirt 字段不在 BTW 注册表 _reg-fields.json 中，别名表暂不记，等转正时一并处理。"
+}

@@ -28,12 +28,15 @@ Minecraft 1.6.4 整合包「德爷生存」（Better Than Wolves Community Editi
 
 ## 目录与更新流程
 
-站点产物在 `docs/`（Pages 从该目录出站），制作现场（反编译输出、贴图池、脚本）在本地不入库。
+仓库只存**源 + 校验器**，不存构建产物：`docs/` 由 Actions 构建后作为 Pages artifact 直接部署，改动一条数据只产生一行 diff。制作现场（反编译输出、贴图池、中间数据）在本地不入库；第 8 条核对 `imgNeed` 时读 `tools/texpool-index.json` 这份路径清单，而不是那 100 MB 贴图池。
 
 ```bash
-node tools/build-dist.js --user=yuyu123456608 --repo=btw-ce-cn-guide   # 重建 docs/，写入绝对 og URL
+node tools/build-dist.js --user=yuyu123456608 --repo=btw-ce-cn-guide   # 本地预览用：生成 docs/
 node tools/verify.js                                                  # 32 条断言，不过不许提交
-git add . && git commit -m "..." && git push
+node tools/smoke.js                                                   # 可选：对线上逐个 GET 核对
+git add . && git commit -m "..." && git push                          # push 后 CI 构建 → 校验 → 部署 → smoke
 ```
 
-`--user` / `--repo` 每次都要带：少了 og:image 会退回相对路径，第 27 条会当场拦下。
+部署链路（`.github/workflows/deploy.yml`）：build → verify 32 条 → upload-pages-artifact(`docs`) → deploy-pages → 对线上 9 个 URL + 自定义 404 页跑 smoke。**校验不过就不会部署**，坏版本进不了线上。
+
+`--user` / `--repo` 每次都带：少了 og:image 会退回相对路径，第 27 条会当场拦下。
