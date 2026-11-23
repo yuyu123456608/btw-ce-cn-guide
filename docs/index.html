@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- dist-built: 2026-11-23T15:03:34Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>德爷生存 · Better Than Wolves 中文图鉴站</title>
+<meta name="description" content="Minecraft「德爷生存」模组主题站：198 项核心条目中 141 项已在图鉴展示（配方核实 59 项、加工配方 120 条），另 57 项待补归档；含合成速查与 7 篇生存路线，非官方粉丝站。">
+<!-- 基础 SEO：favicon 用内联 svg（草方块绿 + 黑框），不联网也不会有 404 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%235AA83C'/%3E%3Crect x='0.5' y='0.5' width='15' height='15' fill='none' stroke='%230B0D0F' stroke-width='3'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yuyu123456608.github.io/btw-ce-cn-guide/">
+<meta property="og:title" content="德爷生存 · Better Than Wolves 中文图鉴站">
+<meta property="og:description" content="BTW 中文图鉴站：物品图鉴・3×3 合成速查・机器加工配方・7 篇生存路线">
+<meta property="og:site_name" content="德爷生存 · BTW 中文图鉴">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yuyu123456608.github.io/btw-ce-cn-guide/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="德爷生存 · BTW 中文图鉴站：物品图鉴、合成速查与生存路线">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yuyu123456608.github.io/btw-ce-cn-guide/og.png">
+<style>
+/* ============================================================
+   0. 变量与基础重置
+   ============================================================ */
+:root{
+  /* 主色：草方块绿 / 泥土棕 / 钻石青 / 深灰岩 */
+  --grass:#5AA83C; --grass-d:#3C7A25; --grass-l:#7CC95A;
+  --dirt:#8B5A2B;  --dirt-d:#5E3A18;
+  --diamond:#33C0C4; --diamond-d:#1F8A8D;
+  --rock:#23262A;  --rock-2:#2B2F34; --rock-3:#33383E; --rock-d:#15171B;
+  --ink:#0B0D0F;   --text:#EDEAE1;  --muted:#9AA3AA;
+  /* 像素字体全部为本地降级方案，不联网加载 */
+  --px:"Zpix","Fusion Pixel 12px","Press Start 2P","Silkscreen","DotGothic16","WenQuanYi Bitmap Song",monospace;
+  --sans:"Source Han Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+/* overflow-x:hidden 会让 body 变成滚动容器，position:sticky 随即失效（导航/阅读页顶部栏都不再吸顶）。
+   clip 只裁切、不建立滚动容器，sticky 才能正常工作；旧浏览器忽略 clip 时也不会破版。 */
+html,body{max-width:100%;overflow-x:clip}
+body{
+  background:var(--rock-d);color:var(--text);font-family:var(--sans);
+  font-size:15px;line-height:1.75;
+}
+/* 背景纹理由 fixed 伪元素铺底：原先 body{background-attachment:fixed} 在桌面端滚动时
+   每帧重绘整屏渐变，笔记本/集显上明显掉帧；伪元素只合成一次，滚动不再重绘。 */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 1px,transparent 1px 4px),
+    radial-gradient(1200px 600px at 50% -10%,#2A3136 0%,#15171B 70%);
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;color:inherit}
+::selection{background:var(--diamond);color:var(--ink)}
+:focus-visible{outline:3px solid var(--diamond);outline-offset:2px}
+
+/* ============================================================
+   1. 顶部导航
+   ============================================================ */
+.nav{position:sticky;top:0;z-index:60;background:rgba(21,23,27,.96);border-bottom:4px solid var(--ink)}
+.nav-in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px;min-height:62px}
+.logo{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.logo-mark{
+  width:38px;height:38px;display:grid;place-items:center;background:var(--grass);
+  border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink),inset -4px -4px 0 var(--grass-d),inset 4px 4px 0 var(--grass-l);
+  font-family:var(--px);font-size:16px;color:#0F2A08;font-weight:700;
+}
+.logo-txt{font-family:var(--px);font-size:15px;letter-spacing:2px;color:var(--text);text-shadow:2px 2px 0 #000}
+.logo-txt small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:1px;color:var(--diamond);text-shadow:none;margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:6px;margin-left:auto;flex-wrap:wrap}
+.nav-links a{padding:8px 12px;font-size:14px;font-weight:600;color:var(--muted);border:3px solid transparent;transition:color .15s}
+.nav-links a:hover{color:var(--text);border-color:var(--rock-3);background:var(--rock-2)}
+.nav-links a.on{color:var(--ink);background:var(--grass);border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.nav-toggle{
+  display:none;width:44px;height:44px;background:var(--rock-2);border:3px solid var(--ink);
+  box-shadow:4px 4px 0 var(--ink);cursor:pointer;align-items:center;justify-content:center;
+  flex-direction:column;gap:4px;margin-left:auto;
+}
+.nav-toggle i{display:block;width:20px;height:3px;background:var(--text)}
+
+/* ============================================================
+   2. 通用布局 / 按钮 / 卡片
+   ============================================================ */
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+.view{display:none}
+.view.on{display:block}
+.section{padding:46px 0 10px}
+.sec-head{display:flex;align-items:flex-end;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sec-title{font-family:var(--px);font-size:22px;letter-spacing:2px;line-height:1.4;text-shadow:3px 3px 0 #000;color:var(--text)}
+.sec-title em{font-style:normal;color:var(--diamond)}
+.sec-sub{font-size:13px;color:var(--muted);padding-bottom:4px}
+.sec-line{height:4px;background:repeating-linear-gradient(90deg,var(--grass) 0 12px,transparent 12px 24px);border-top:2px solid var(--ink);margin:0 0 24px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 22px;min-height:48px;background:var(--grass);color:#0C2204;
+  font-weight:800;font-size:15px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+  border-radius:0;cursor:pointer;letter-spacing:1px;font-family:var(--px);
+  transition:transform .08s,box-shadow .08s,background .15s;
+}
+.btn:hover{background:var(--grass-l)}
+.btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+.btn.ghost{background:var(--rock-2);color:var(--text)}
+.btn.ghost:hover{background:var(--rock-3);color:var(--diamond)}
+.btn.sm{padding:8px 14px;min-height:38px;font-size:13px;box-shadow:4px 4px 0 var(--ink)}
+.card{background:var(--rock-2);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.mec{position:relative;background:var(--rock-2);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 18px 16px;display:flex;gap:14px;align-items:flex-start}
+.mec-ico{
+  flex:0 0 46px;width:46px;height:46px;display:grid;place-items:center;border:3px solid var(--ink);
+  background:var(--grass);box-shadow:inset -4px -4px 0 var(--grass-d),inset 4px 4px 0 var(--grass-l);
+  font-family:var(--px);font-size:16px;color:#0F2A08;
+}
+.mec h3{font-size:15px;font-weight:800;margin-bottom:6px;color:var(--text);letter-spacing:.5px}
+.mec p{font-size:13px;color:var(--muted);line-height:1.7}
+.mec-code{position:absolute;right:10px;top:8px;font-family:var(--px);font-size:9px;color:var(--rock-3)}
+
+/* ============================================================
+   3. Hero
+   ============================================================ */
+.hero{
+  position:relative;margin-top:22px;padding:60px 22px 66px;border:3px solid var(--ink);
+  box-shadow:8px 8px 0 var(--ink);overflow:hidden;text-align:center;
+  /* 草方块 -> 泥土 的像素分层 */
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.09) 0 6px,transparent 6px 12px),
+    linear-gradient(180deg,#5AA83C 0%,#5AA83C 46%,#4E9634 46%,#4E9634 52%,#8B5A2B 52%,#7B4E24 88%,#5E3A18 100%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(0,0,0,.22) 1px,transparent 1px);
+  background-size:6px 6px;opacity:.35;
+}
+.hero-badge{
+  display:inline-block;position:relative;z-index:2;font-family:var(--px);font-size:11px;
+  letter-spacing:2px;background:var(--ink);color:var(--diamond);padding:7px 12px;
+  border:3px solid var(--diamond);margin-bottom:22px;
+}
+.hero h1{
+  position:relative;z-index:2;font-family:var(--px);font-size:clamp(36px,8vw,74px);
+  line-height:1.18;letter-spacing:6px;color:#FBFFF7;margin-bottom:14px;
+  text-shadow:3px 0 0 var(--ink),-3px 0 0 var(--ink),0 3px 0 var(--ink),0 -3px 0 var(--ink),6px 6px 0 var(--ink),9px 9px 0 rgba(0,0,0,.45);
+}
+.hero-sub{position:relative;z-index:2;font-size:clamp(15px,3.4vw,21px);font-weight:800;color:#FBFFF7;letter-spacing:2px;margin-bottom:10px;text-shadow:2px 2px 0 rgba(0,0,0,.6)}
+.hero-sub b{color:#D8FFC7}
+.hero-desc{position:relative;z-index:2;max-width:620px;margin:0 auto 30px;font-size:13.5px;color:#F2F6EA;text-shadow:1px 1px 0 rgba(0,0,0,.55)}
+.hero-btns{position:relative;z-index:2;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-strip{
+  position:relative;z-index:2;margin-top:34px;display:flex;gap:0;justify-content:center;flex-wrap:wrap;
+  border:3px solid var(--ink);background:rgba(11,13,15,.55);box-shadow:4px 4px 0 var(--ink);
+  width:fit-content;margin-left:auto;margin-right:auto;
+}
+.hero-strip span{padding:8px 16px;font-family:var(--px);font-size:11px;letter-spacing:1px;color:var(--text);border-right:3px solid var(--ink)}
+.hero-strip span:last-child{border-right:0}
+.hero-strip b{color:var(--diamond)}
+/* 收录进度条：已核对 / 待补 可视化，像素风直角块 */
+.prog{
+  position:relative;z-index:2;margin:14px auto 0;width:min(320px,86%);height:14px;
+  border:3px solid var(--ink);background:#0B0D0F;box-shadow:3px 3px 0 var(--ink);
+}
+.prog i{display:block;height:100%;width:0;background:var(--grass);transition:width .4s steps(8,end)}
+.prog-text{
+  position:relative;z-index:2;margin:10px auto 0;text-align:center;font-family:var(--px);
+  font-size:10px;letter-spacing:1px;color:#E7EDE2;text-shadow:1px 1px 0 rgba(0,0,0,.6);
+}
+
+/* ============================================================
+   4. 物品图鉴
+   ============================================================ */
+.toolbar{background:var(--rock-2);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:16px;margin-bottom:22px}
+.search-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search-box{position:relative;flex:1 1 280px;display:flex;align-items:center;background:var(--rock-d);border:3px solid var(--ink)}
+.search-box span{padding:0 10px;font-family:var(--px);font-size:13px;color:var(--diamond)}
+.search-box input{flex:1;min-width:0;border:0;background:transparent;color:var(--text);font-size:15px;padding:12px 8px 12px 0;outline:none;font-family:var(--sans)}
+.search-box input::placeholder{color:#6C757C}
+.search-box:focus-within{border-color:var(--diamond);box-shadow:0 0 0 3px rgba(51,192,196,.2)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{
+  padding:7px 13px;background:var(--rock-d);border:3px solid var(--ink);color:var(--muted);
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .12s;box-shadow:3px 3px 0 var(--ink);
+}
+.chip:hover{color:var(--text);background:var(--rock-3)}
+.chip.on{background:var(--diamond);color:#03272A}
+.item-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:var(--muted);margin-bottom:16px;flex-wrap:wrap}
+.item-meta b{color:var(--diamond);font-family:var(--px);font-size:12px}
+.item-note{font-size:12px;color:#8B949B;background:var(--rock-2);border-left:4px solid var(--dirt);padding:8px 12px;margin-bottom:18px;line-height:1.8}
+.item-note b{color:var(--diamond);font-family:var(--px);font-size:12px}
+.img-note{font-size:12px;color:#B9A27A;margin-top:6px;line-height:1.6}
+.img-note:empty{display:none}
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px;align-content:start}
+.item-card{
+  position:relative;display:flex;flex-direction:column;gap:8px;padding:14px 12px 12px;
+  background:var(--rock-2);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  cursor:pointer;text-align:left;width:100%;
+  transition:transform .1s,box-shadow .1s,background .15s;
+}
+.item-card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink);background:var(--rock-3)}
+.item-card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.ico{
+  width:56px;height:56px;display:grid;place-items:center;border:3px solid var(--ink);
+  font-family:var(--px);font-size:20px;font-weight:700;color:#0B0D0F;flex:0 0 auto;
+  box-shadow:inset -5px -5px 0 rgba(0,0,0,.32),inset 5px 5px 0 rgba(255,255,255,.28);
+  position:relative;overflow:hidden;
+}
+/* 贴图图标：铺满方块并保持像素感；加载失败由 onerror 移除，自动露出首字底 */
+.ico .pxi{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  image-rendering:pixelated;image-rendering:crisp-edges;
+}
+.ico .fallback{position:relative;z-index:0}
+/* 「无图」标记：jar 里确实没有贴图的条目（头颅 / 矿渣 / 毒囊），和「图挂了」区分开 */
+.ico.no-img::after{
+  content:'无图';position:absolute;right:1px;bottom:1px;z-index:3;
+  font-family:var(--sans,inherit);font-size:8px;font-weight:700;line-height:1;
+  padding:2px 3px;background:#0B0D0F;color:#F4EFE3;letter-spacing:.5px;
+}
+.ico.sm{width:40px;height:40px;font-size:15px}
+.item-card .nm{font-size:14px;font-weight:800;color:var(--text);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.item-card .en{font-size:11px;color:#8B949B;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;margin-top:-4px}
+.cat-tag{align-self:flex-start;font-size:10.5px;font-weight:700;padding:2px 7px;border:2px solid currentColor;color:var(--c,#33C0C4);letter-spacing:.5px}
+/* 状态角标：图 = 配图，方 = 配方。亮=齐，灰=待补，一眼看出每条缺什么 */
+.flags{display:flex;gap:5px;margin-top:1px}
+.flags i{font-style:normal;font-family:var(--px);font-size:9px;line-height:1;padding:3px 4px;border:2px solid #5A5F61;color:#8A8F91;letter-spacing:.5px}
+.flags i.on{border-color:#7BD37B;color:#9BF09B}
+.flags i.no{border-style:dashed}
+.load-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 0 44px}
+.load-wrap .count{font-family:var(--px);font-size:11px;color:var(--muted);letter-spacing:1px}
+.sentinel{width:100%;height:1px}
+
+/* ============================================================
+   5. 合成速查
+   ============================================================ */
+.craft-panel{background:var(--rock-2);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:20px;margin-bottom:20px}
+.field{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.field label{font-family:var(--px);font-size:12px;letter-spacing:1px;color:var(--diamond)}
+select{
+  flex:1 1 240px;min-width:0;padding:12px;background:var(--rock-d);color:var(--text);
+  border:3px solid var(--ink);border-radius:0;font-size:15px;font-family:var(--sans);cursor:pointer;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--diamond) 50%),linear-gradient(135deg,var(--diamond) 50%,transparent 50%);
+  background-position:calc(100% - 18px) 55%,calc(100% - 12px) 55%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;
+}
+.craft-result{margin-top:18px}
+.craft-row{display:flex;gap:12px;align-items:center;padding:12px 14px;margin-bottom:8px;background:var(--rock-d);border:3px solid var(--ink);flex-wrap:wrap}
+.craft-row .n{font-weight:800;color:var(--text);font-size:14px;flex:0 0 auto}
+.craft-row .formula{font-size:12.5px;color:var(--muted)}
+.empty{padding:26px 18px;text-align:center;color:var(--muted);font-size:13px;border:3px dashed #3A4046;background:rgba(11,13,15,.35)}
+
+/* ============================================================
+   6. 攻略与阅读器
+   ============================================================ */
+.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.gcard{
+  display:flex;flex-direction:column;gap:10px;text-align:left;width:100%;
+  background:var(--rock-2);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+  padding:18px;cursor:pointer;transition:transform .12s,box-shadow .12s;
+}
+.gcard:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.gcard .gcat{align-self:flex-start;font-family:var(--px);font-size:10px;letter-spacing:1px;background:var(--dirt);color:#2A1603;padding:4px 8px;border:2px solid var(--ink)}
+.gcard h3{font-size:16px;font-weight:800;line-height:1.4;color:var(--text)}
+.gcard p{font-size:13px;color:var(--muted);line-height:1.7}
+.gcard .gmeta{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:#8B949B;border-top:2px dashed #3A4046;padding-top:10px;margin-top:auto}
+.reader{display:none}
+.reader.on{display:block}
+.reader-top{position:sticky;top:var(--navh,66px);z-index:40;background:rgba(21,23,27,.97);border-bottom:3px solid var(--ink);padding:12px 0;margin-bottom:24px}
+.reader-top-in{display:flex;gap:14px;align-items:center;flex-wrap:wrap;max-width:1120px;margin:0 auto;padding:0 16px}
+.reader-title{font-family:var(--px);font-size:14px;letter-spacing:1px;color:var(--text);flex:1 1 220px;min-width:0}
+.reader-body{display:grid;grid-template-columns:230px minmax(0,1fr);gap:26px;align-items:start;padding-bottom:40px}
+.toc{position:sticky;top:calc(var(--navh,66px) + 70px);align-self:start;background:var(--rock-2);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:14px}
+.toc h4{font-family:var(--px);font-size:11px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px}
+.toc ol{list-style:none;display:flex;flex-direction:column;gap:4px}
+.toc a{display:flex;gap:8px;padding:7px 8px;font-size:12.5px;color:var(--muted);border-left:4px solid transparent;line-height:1.5}
+.toc a:hover{color:var(--text);background:var(--rock-d);border-left-color:var(--grass)}
+.toc a b{font-family:var(--px);color:var(--diamond);font-size:10px;flex:0 0 auto}
+.sections{display:flex;flex-direction:column;gap:16px;min-width:0}
+.sec-card{background:var(--rock-2);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 18px 16px;scroll-margin-top:150px}
+.sec-card .no{display:inline-block;font-family:var(--px);font-size:12px;letter-spacing:1px;background:var(--diamond);color:#03272A;padding:3px 8px;border:2px solid var(--ink);margin-bottom:10px}
+.sec-card h3{font-size:15.5px;font-weight:800;color:var(--text);margin-bottom:8px}
+.sec-card p{font-size:13.5px;color:#C7CDD2;line-height:1.9}
+.guide-note{font-size:12px;color:#8B949B;border-left:4px solid var(--dirt);padding:6px 12px;margin-top:18px;line-height:1.8}
+
+/* ============================================================
+   7. 弹层（桌面居中 / 手机底部抽屉）
+   ============================================================ */
+.modal{position:fixed;inset:0;z-index:120;display:none;background:rgba(6,8,10,.82);padding:24px;align-items:center;justify-content:center;overflow:auto}
+.modal.on{display:flex}
+.sheet{position:relative;width:min(680px,100%);max-height:88vh;overflow:auto;background:var(--rock-2);border:3px solid var(--ink);box-shadow:10px 10px 0 #000;padding:0 0 22px}
+.sheet-head{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:flex-start;padding:18px;background:var(--rock-3);border-bottom:3px solid var(--ink)}
+.sheet-head .ico{width:64px;height:64px;font-size:24px}
+.sh-title{flex:1;min-width:0}
+.sh-title h2{font-family:var(--px);font-size:19px;letter-spacing:1px;line-height:1.4;color:var(--text);word-break:break-word}
+.sh-title .en{font-size:12px;color:#8B949B;letter-spacing:1px;margin-top:2px}
+.sh-title .alias{font-size:12px;color:var(--diamond);margin-top:6px;word-break:break-word;white-space:pre-line}
+.close-btn{flex:0 0 40px;width:40px;height:40px;display:grid;place-items:center;background:var(--rock-d);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:var(--px);font-size:16px;color:var(--text)}
+.close-btn:hover{background:var(--dirt);color:#fff}
+.sheet-body{padding:18px}
+.craft-area{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+.craft-grid-wrap{flex:0 0 auto}
+.craft-label{font-family:var(--px);font-size:10.5px;letter-spacing:1px;color:var(--diamond);margin-bottom:8px}
+.craft-grid{display:grid;grid-template-columns:repeat(3,var(--cell,62px));grid-template-rows:repeat(3,var(--cell,62px));gap:3px;background:#0B0D0F;border:3px solid var(--ink);padding:3px}
+.cell{display:grid;place-items:center;background:var(--rock-d);border:2px solid #000;position:relative}
+.cell.filled{background:#3A4046}
+.cell .ico.sm{width:calc(var(--cell,62px) - 12px);height:calc(var(--cell,62px) - 12px);font-size:15px;box-shadow:none;border-width:0}
+.cell .void{width:60%;height:60%;background:repeating-linear-gradient(45deg,#20242a 0 6px,#262b31 6px 12px)}
+.mats-col{flex:1 1 220px;min-width:0}
+.mat-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.mat-list li{display:flex;align-items:center;gap:8px;font-size:13px;color:#C7CDD2;background:var(--rock-d);padding:7px 10px;border-left:4px solid var(--grass);word-break:break-word}
+.mat-list li b{font-family:var(--px);font-size:10px;color:var(--diamond)}
+.proc-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.proc-list li{font-size:13px;color:#C7CDD2;background:var(--rock-d);padding:7px 10px;border-left:4px solid var(--diamond);word-break:break-word}
+.proc-note{margin-top:8px;font-size:11.5px;color:#8A8F91;line-height:1.7}
+.info-block{margin-top:14px}
+.info-block h4{font-family:var(--px);font-size:11px;letter-spacing:1px;color:var(--diamond);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.info-block h4::after{content:"";flex:1;height:3px;background:repeating-linear-gradient(90deg,#3A4046 0 8px,transparent 8px 16px)}
+.info-block p{font-size:13.5px;color:#C7CDD2;line-height:1.9;word-break:break-word;white-space:pre-line}
+/* 无序合成：不画 9 宫格，改成一行材料条，避免视觉上宣称「排布有意义」 */
+.craft-grid.shapeless{display:flex;flex-wrap:wrap;grid-template-columns:none;grid-template-rows:none;background:none;border:none;padding:0;gap:6px;max-width:320px}
+.craft-grid.shapeless .sm-chip{font-size:12.5px;color:#C7CDD2;background:var(--rock-d);border:2px solid #000;border-left:4px solid var(--grass);padding:6px 9px}
+.pending{display:block;margin-top:8px;font-size:12px;color:#C9A227;border:2px dashed #4A4433;padding:6px 10px;background:rgba(201,162,39,.06);line-height:1.7}
+.sheet-foot{padding:0 18px 4px;font-size:11.5px;color:#7D868D;line-height:1.7}
+
+/* ============================================================
+   8. 页脚
+   ============================================================ */
+.footer{margin-top:56px;border-top:4px solid var(--ink);background:var(--rock);padding:28px 0 34px}
+.footer-in{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;gap:18px;justify-content:space-between;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.footer strong{color:var(--grass);font-family:var(--px);font-size:12px;letter-spacing:1px;display:block;margin-bottom:6px}
+.footer p{margin-top:4px}
+
+/* ============================================================
+   9. 响应式：980 / 768 / 430
+   ============================================================ */
+@media (max-width:980px){
+  .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding:48px 18px 54px}
+  .reader-body{grid-template-columns:196px minmax(0,1fr);gap:18px}
+}
+@media (max-width:768px){
+  .nav-links{display:none;width:100%;order:3;margin-left:0;padding-top:8px}
+  .nav-links.open{display:flex}
+  .nav-in{flex-wrap:wrap}
+  .nav-toggle{display:flex}
+  .section{padding:34px 0 6px}
+  .sec-title{font-size:18px}
+  .grid-3,.grid-2,.guide-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .hero h1{letter-spacing:3px}
+  .hero-strip span{padding:7px 10px;font-size:10px}
+  .reader-body{grid-template-columns:minmax(0,1fr)}
+  .toc{position:static;order:-1}
+  .toc ol{flex-direction:row;flex-wrap:wrap;gap:6px;padding-bottom:0}
+  .toc li{flex:0 1 auto;max-width:100%}
+  .toc a{border-left:0;border-bottom:4px solid transparent;white-space:nowrap;background:var(--rock-d);font-size:12px;padding:6px 8px}
+  .toc a:hover{border-bottom-color:var(--grass)}
+  .sheet{max-height:86vh;width:100%;border-left:0;border-right:0;border-bottom:0}
+  .modal{padding:0;align-items:flex-end}
+  .modal.on .sheet{animation:drawerUp .22s ease-out}
+  .craft-grid{--cell:48px}
+  .cell .ico.sm{width:38px;height:38px;font-size:14px}
+}
+@media (max-width:430px){
+  .items-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .item-card{padding:11px 10px 10px;gap:6px}
+  .ico{width:46px;height:46px;font-size:17px}
+  .grid-3,.grid-2,.guide-grid{grid-template-columns:minmax(0,1fr)}
+  .hero h1{letter-spacing:2px}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{width:100%}
+  .sec-head{gap:6px}
+  .craft-grid{--cell:48px}
+  /* 搜索框与清空按钮保持同一行 */
+  .search-box{flex:1 1 190px}
+  .search-row .btn.sm{padding:8px 10px;min-height:44px;font-size:12px}
+}
+@media (min-width:1440px){
+  .wrap,.nav-in,.footer-in,.reader-top-in{max-width:1180px}
+}
+@keyframes drawerUp{from{transform:translateY(18px);opacity:.6}to{transform:translateY(0);opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<!-- 静态数字守卫（verify 第 25 条读取）：这里与 hero / meta 里的数字必须等于 items.js 的实测值。
+     改数据后跑 verify 会指出每一处不一致，别手工同步。 -->
+<div id="countGuard" hidden
+     data-main="141" data-archive="57" data-total="198"
+     data-recipes="59" data-proc="120" data-grey="11" data-icons="138"></div>
+
+<!-- ================= 顶部导航 ================= -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="#home" data-go="home" aria-label="德爷生存 首页">
+      <span class="logo-mark">德</span>
+      <span class="logo-txt">德爷生存<small>Better Than Wolves · CN</small></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="展开导航" aria-expanded="false">
+      <i></i><i></i><i></i>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home"    data-go="home">首页</a>
+      <a href="#about"   data-go="about">模组介绍</a>
+      <a href="#items"   data-go="items">物品图鉴</a>
+      <a href="#recipes" data-go="recipes">合成速查</a>
+      <a href="#guides"  data-go="guides">玩法攻略</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= 首页 ================= -->
+  <section class="view on" id="view-home">
+    <div class="wrap">
+      <div class="hero">
+        <span class="hero-badge">HARDCORE SURVIVAL · 中文模组版</span>
+        <h1>德爷生存</h1>
+        <p class="hero-sub">wiki 557 项中已整理 <b id="heroTotal">198</b> 条核心条目，其中 <b id="heroShown">141</b> 条已在图鉴展示</p>
+        <p class="hero-desc">BTW·比狼好 的中文模组版。树要一层层剥，铁要一道道炼，跑两步就饿——这里的每一步都得算清楚。</p>
+        <div class="hero-btns">
+          <button class="btn" data-go="items" type="button">进入物品图鉴</button>
+          <button class="btn ghost" data-go="guides" type="button">查看玩法攻略</button>
+        </div>
+        <div class="hero-strip">
+          <span>收录 <b id="statItems">0</b> 项</span>
+          <span>待补 <b id="statPending">0</b> 项</span>
+          <span>机制 <b>6</b> 条</span>
+          <span>攻略 <b>7</b> 篇</span>
+        </div>
+        <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+        <p class="prog-text" id="progText">收录 0 项 / 待补 0 项</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <h2 class="sec-title">核心<em>机制</em></h2>
+          <span class="sec-sub">六条改动，决定了这个模组的全部节奏</span>
+        </div>
+        <div class="sec-line"></div>
+        <div class="grid-3" id="homeMec"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <h2 class="sec-title">从这里<em>开始</em></h2>
+          <span class="sec-sub">查物品 / 反查配方 / 照着路线走</span>
+        </div>
+        <div class="sec-line"></div>
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="font-family:var(--px);font-size:13px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">01 / 物品图鉴</h3>
+            <p style="font-size:13px;color:var(--muted);line-height:1.8">按中文名、英文名、别名、拼音全拼或首字母搜索，点开看合成与效果。</p>
+            <p style="margin-top:14px"><button class="btn sm" data-go="items" type="button">去看看</button></p>
+          </div>
+          <div class="card">
+            <h3 style="font-family:var(--px);font-size:13px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">02 / 合成速查</h3>
+            <p style="font-size:13px;color:var(--muted);line-height:1.8">手里只有一堆材料？选一个材料，立刻知道它能做出哪些东西。</p>
+            <p style="margin-top:14px"><button class="btn sm ghost" data-go="recipes" type="button">反查配方</button></p>
+          </div>
+          <div class="card">
+            <h3 style="font-family:var(--px);font-size:13px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">03 / 玩法攻略</h3>
+            <p style="font-size:13px;color:var(--muted);line-height:1.8">七条专属路线，从第一棵树到末地，按编号一步步走。</p>
+            <p style="margin-top:14px"><button class="btn sm ghost" data-go="guides" type="button">读攻略</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 模组介绍 ================= -->
+  <section class="view" id="view-about">
+    <div class="wrap">
+      <div class="section">
+        <div class="sec-head">
+          <h2 class="sec-title">模组<em>介绍</em></h2>
+          <span class="sec-sub">BTW · Better Than Wolves · 中文模组版</span>
+        </div>
+        <div class="sec-line"></div>
+        <div class="card" style="margin-bottom:22px">
+          <p style="font-size:14px;color:#C7CDD2;line-height:2">
+            德爷生存 是把 BTW（比狼好）整套硬核体系中文化的版本：原版的便捷配方几乎全部被拆掉，木头、石头、金属、陶器、动力都要按现实逻辑一步步加工。
+            它不讲「更快变强」，只讲「别死」——饥饿、野兽、火候和产线，任何一环算错都会让你重开一局。
+          </p>
+        </div>
+        <div class="grid-2" id="aboutMec"></div>
+
+        <div class="section" style="padding-top:34px">
+          <div class="sec-head"><h2 class="sec-title">本站<em>收录范围</em></h2></div>
+          <div class="sec-line"></div>
+          <div class="card">
+            <p style="font-size:13.5px;color:#C7CDD2;line-height:2">
+              本站只收录本模组新增或改造的内容，<b style="color:var(--grass)">不收录原版 Minecraft 的配方与玩法</b>。
+              物品数据来自 BTW 官方百科 Items 分类（该分类共 557 项），本站已收录 <span id="introCount">0</span> 项核心条目并展示，其余 <span id="introPending">0</span> 项待补归档。
+              凡未逐条核对的配方与数值，页面统一标注「以图鉴手册为准」。
+            </p>
+            <p class="guide-note" style="margin-top:14px">非官方粉丝站，模组版权归鲲鹏工作室 / 甜柠檬所有。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 物品图鉴 ================= -->
+  <section class="view" id="view-items">
+    <div class="wrap">
+      <div class="section" style="padding-bottom:0">
+        <div class="sec-head">
+          <h2 class="sec-title">物品<em>图鉴</em></h2>
+          <span class="sec-sub">点开卡片看 3×3 合成与获取方式</span>
+        </div>
+        <div class="sec-line"></div>
+
+        <div class="toolbar">
+          <div class="search-row">
+            <div class="search-box">
+              <span>&gt;</span>
+              <input id="searchInput" type="search" inputmode="search" autocomplete="off"
+                     placeholder="中文 / 英文 / 别名 / 拼音全拼 / 首字母，如 gzt" aria-label="搜索物品">
+            </div>
+            <button class="btn sm ghost" id="clearSearch" type="button">清空</button>
+          </div>
+          <div class="chips" id="catChips"></div>
+        </div>
+
+        <p class="item-note">数据来自 BTW 官方百科 Items 分类（557 项，不含原版物品）。本站已收录 <b id="totalOurs">0</b> 项，其中配方已核实 <b id="gridVerified">0</b> 项、另有加工配方 <b id="procVerified">0</b> 条（坩埚/釜锅/磨石/锯/窑等机器产出，单列不计入配方数）；还有 <b id="totalPending">0</b> 项配方与获取待补，归档在数据文件末尾、不参与渲染。配方细节以图鉴手册为准。每张卡右下角四枚角标：<b>图</b>=配图，<b>方</b>=3×3 有排布配方，<b>散</b>=无序合成（材料任意摆放），<b>源</b>=掉落/工序来源（这类条目本来就没有配方）；亮色=已齐，灰色虚线=待补或待核。</p>
+
+        <div class="item-meta">
+          <span>当前条件：<b id="metaCount">0</b> 项 / 已显示 <b id="metaShown">0</b> 项</span>
+          <span>滚动到底自动加载，也可点按钮</span>
+        </div>
+
+        <div class="items-grid" id="itemsGrid"></div>
+        <div class="sentinel" id="sentinel" aria-hidden="true"></div>
+        <div class="load-wrap">
+          <span class="count" id="loadCount"></span>
+          <button class="btn ghost" id="loadMore" type="button">加载更多</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 合成速查 ================= -->
+  <section class="view" id="view-recipes">
+    <div class="wrap">
+      <div class="section" style="padding-bottom:0">
+        <div class="sec-head">
+          <h2 class="sec-title">合成<em>速查</em></h2>
+          <span class="sec-sub">反向查询：手里有什么，能做出什么</span>
+        </div>
+        <div class="sec-line"></div>
+
+        <div class="craft-panel">
+          <div class="field">
+            <label for="matSelect">选择材料</label>
+            <select id="matSelect" aria-label="选择一个材料"></select>
+          </div>
+          <p class="guide-note">配方由社区整理，供快速定位；排布与数量以图鉴手册为准。</p>
+        </div>
+
+        <div class="craft-result" id="craftResult"></div>
+        <div style="height:44px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 玩法攻略 ================= -->
+  <section class="view" id="view-guides">
+    <div class="wrap">
+      <!-- 列表 -->
+      <div id="guideList">
+        <div class="section" style="padding-bottom:0">
+          <div class="sec-head">
+            <h2 class="sec-title">玩法<em>攻略</em></h2>
+            <span class="sec-sub">德爷生存专属路线，不是原版教程</span>
+          </div>
+          <div class="sec-line"></div>
+          <div class="guide-grid" id="guideGrid"></div>
+          <div style="height:44px"></div>
+        </div>
+      </div>
+
+      <!-- 正文 -->
+      <div class="reader" id="reader">
+        <div class="reader-top">
+          <div class="reader-top-in">
+            <button class="btn sm ghost" id="backToList" type="button">← 返回攻略列表</button>
+            <div class="reader-title" id="readerTitle"></div>
+          </div>
+        </div>
+        <div class="reader-body">
+          <aside class="toc">
+            <h4>本篇目录</h4>
+            <ol id="readerToc"></ol>
+          </aside>
+          <div class="sections" id="readerSections"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= 页脚 ================= -->
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <strong>德爷生存 · BTW 中文模组版</strong>
+      <p>非官方粉丝站 · 内容仅供学习交流</p>
+    </div>
+    <div style="text-align:right">
+      <p>本站为非官方粉丝站，模组版权归鲲鹏工作室 / 甜柠檬所有</p>
+      <p>© 2026 德爷生存图鉴站 · 数据参考 wiki.btwce.com</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= 物品详情弹层（3×3 合成 + 材料 + 效果 + 获取） ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="sheet" id="sheet">
+    <div class="sheet-head">
+      <div class="ico" id="modalIco">?</div>
+      <div class="sh-title">
+        <h2 id="modalTitle">物品</h2>
+        <div class="en" id="modalEn"></div>
+        <div class="alias" id="modalAlias"></div>
+        <div class="img-note" id="modalImgNote"></div>
+      </div>
+      <button class="close-btn" id="modalClose" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="sheet-body">
+      <div class="craft-area">
+        <div class="craft-grid-wrap">
+          <div class="craft-label" id="gridLabel">合成网格 3 × 3</div>
+          <div class="craft-grid" id="modalGrid"></div>
+        </div>
+        <div class="mats-col">
+          <div class="craft-label">材料清单</div>
+          <ul class="mat-list" id="modalMats"></ul>
+        </div>
+      </div>
+      <div class="info-block">
+        <h4>效果 / 用途</h4>
+        <p id="modalEffect"></p>
+      </div>
+      <div class="info-block" id="procBlock" style="display:none">
+        <h4>加工配方</h4>
+        <ul class="proc-list" id="modalProc"></ul>
+        <p class="proc-note">加工配方指在机器里加工得到的途径（坩埚、釜锅、磨石、锯、窑等），不计入上方「配方已核实」。</p>
+      </div>
+      <div class="info-block" id="originBlock" style="display:none">
+        <h4>来源</h4>
+        <p id="modalOrigin"></p>
+      </div>
+      <div class="info-block">
+        <h4>获取方式</h4>
+        <p id="modalObtain"></p>
+      </div>
+    </div>
+    <div class="sheet-foot" id="modalFoot">配方与数值未逐条核对时，以图鉴手册为准。</div>
+  </div>
+</div>
+
+<script src="items.js"></script>
+<script src="guides.js"></script>
+<script>
+/* ==========================================================================
+   页面逻辑：路由 / 图鉴分页 / 实时搜索 / 弹层 / 反查合成 / 攻略阅读器
+   数据全部来自 items.js 与 guides.js，本文件不含任何物品文案。
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  /* ---------- 分类配置（配色同时用于图标方块与标签） ---------- */
+  var CATS = {
+    tool:    { name: '工具与武器', color: '#C4553B' },
+    block:   { name: '方块与建筑', color: '#8B5A2B' },
+    metal:   { name: '冶炼与工业', color: '#8A9099' },
+    pottery: { name: '陶器与窑',   color: '#B5764A' },
+    farm:    { name: '农业与食物', color: '#7E9E3A' },
+    misc:    { name: '材料与杂项', color: '#33C0C4' }
+  };
+  var catOrder = ['tool', 'block', 'metal', 'pottery', 'farm', 'misc'];
+
+  var ITEMS  = window.BTW_ITEMS  || [];
+  var GUIDES = window.BTW_GUIDES || [];
+  var BATCH  = 30;                    // 每次追加条数（首批也是 30）
+
+  var state = { cat: 'all', q: '', shown: 0, list: [], current: -1 };
+
+  var $  = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* 拼音首字母：每个音节取首字母，如 "de ye gong zuo tai" -> "dygzt" */
+  function initials(py) {
+    return String(py || '').split(/\s+/).map(function (s) { return s.charAt(0) || ''; }).join('');
+  }
+
+  /* 名称 -> 图标字（找不到物品时用名称首字） */
+  var byCn = {};
+  /* 中文名 + 别名都要能反查：mats 里用的是「休眠灵魂锻造炉」这类旧写法，
+     卡片上叫「沉睡灵魂锻造炉」，只登记 cn 会让材料清单变成点不进去的死文本 */
+  ITEMS.forEach(function (it) {
+    byCn[it.cn] = it;
+    (it.alias || []).forEach(function (a) {
+      if (a && !byCn[a]) byCn[a] = it;
+    });
+  });
+
+  function iconChar(name) {
+    if (byCn[name] && byCn[name].icon) return byCn[name].icon;
+    return String(name || '?').charAt(0);
+  }
+  function catColor(cat) { return (CATS[cat] && CATS[cat].color) || '#33C0C4'; }
+
+  /* ======================================================================
+     一、核心机制文案（两张列表共用，纯前端展示）
+     ====================================================================== */
+  var MECHS = [
+    { code: 'M-01', icon: '树', title: '分层撸树：树皮 + 木棍',
+      text: '砍树不再整块掉木头，先剥树皮、再取木棍。想要木板得先做出锯，木工线从这里开始。' },
+    { code: 'M-02', icon: '饿', title: '疾跑与跳跃大幅耗饱食度',
+      text: '跑跳会迅速掏空饥饿条，赶路前先算粮。饿着打架，你连野兽都跑不过。' },
+    { code: 'M-03', icon: '矿', title: '矿石只掉矿渣，要多道冶炼',
+      text: '铁矿石只掉粗铁块，必须釜锅熔炼成铁粒，九粒才合成一锭铁。一步都不能省。' },
+    { code: 'M-04', icon: '钻', title: '钻石要先合成钻石锭',
+      text: '原版钻石不能直接做工具，需要与钢一起炼成钻石锭。想跳过冶炼，就没有钻石级装备。' },
+    { code: 'M-05', icon: '钢', title: '钢要击败凋零后解锁',
+      text: '灵魂锻造钢是后期门票，产线卡在凋零之后。打不过凋零，就只能停在中前期。' },
+    { code: 'M-06', icon: '畜', title: '牲畜攻击性极强',
+      text: '牛羊也会主动顶人，空手靠近就是送。圈养之前先砌墙，别把牲口当储备粮。' }
+  ];
+
+  function mechHTML(m) {
+    return '<div class="mec">' +
+      '<span class="mec-code">' + esc(m.code) + '</span>' +
+      '<span class="mec-ico">' + esc(m.icon) + '</span>' +
+      '<div><h3>' + esc(m.title) + '</h3><p>' + esc(m.text) + '</p></div>' +
+    '</div>';
+  }
+  $('#homeMec').innerHTML  = MECHS.map(mechHTML).join('');
+  $('#aboutMec').innerHTML = MECHS.map(mechHTML).join('');
+
+  /* ======================================================================
+     二、路由（hash 切换，刷新后仍停在原页）
+     ====================================================================== */
+  var VIEWS = ['home', 'about', 'items', 'recipes', 'guides'];
+
+  function go(view, push) {
+    if (VIEWS.indexOf(view) < 0) view = 'home';
+    VIEWS.forEach(function (v) {
+      $('#view-' + v).classList.toggle('on', v === view);
+    });
+    $$('.nav-links a').forEach(function (a) {
+      a.classList.toggle('on', a.getAttribute('data-go') === view);
+    });
+    $('#navLinks').classList.remove('open');
+    $('#navToggle').setAttribute('aria-expanded', 'false');
+    /* 用 hash 记录位置：file:// 下也可用，避免 history API 的安全限制 */
+    if (push && ('#' + view) !== location.hash) {
+      try { location.hash = view; } catch (e) { /* 忽略 */ }
+    }
+    window.scrollTo(0, 0);
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-go]');
+    if (t) { e.preventDefault(); go(t.getAttribute('data-go'), true); }
+  });
+
+  window.addEventListener('hashchange', function () {
+    var v = (location.hash || '#home').slice(1);
+    if (VIEWS.indexOf(v) < 0) return; // 攻略目录锚点等，不当作页面切换
+    /* 点击导航时视图已切换，这里只处理外部/前进后退的 hash 变化 */
+    if (!document.getElementById('view-' + v).classList.contains('on')) {
+      go(v, false);
+    }
+  });
+
+  $('#navToggle').addEventListener('click', function () {
+    var open = $('#navLinks').classList.toggle('open');
+    this.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  /* ======================================================================
+     三、物品图鉴：筛选 + 搜索 + 分批渲染
+     ====================================================================== */
+  var grid = $('#itemsGrid');
+
+  /* 逐字段匹配：中文名 / 英文名 / 每个别名 / 拼音全拼 / 拼音首字母 / id
+     各查一次，任一命中即命中。不再把所有字段拼成一整串，字段边界清楚，跨字段假匹配消失。 */
+  function norm(s) { return String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ''); }
+  function fieldHit(v, n) { return n ? norm(v).indexOf(n) > -1 : false; }
+
+  function matches(it, q) {
+    if (!q) return true;
+    var n = norm(q);
+    if (!n) return true;
+    if (fieldHit(it.cn, n)) return true;          // 中文名
+    if (fieldHit(it.en, n)) return true;          // 英文名
+    if (fieldHit(it.pinyin, n)) return true;      // 拼音全拼
+    if (fieldHit(initials(it.pinyin), n)) return true; // 拼音首字母
+    if (fieldHit(it.id, n)) return true;          // id
+    var aliases = it.alias || [];
+    for (var i = 0; i < aliases.length; i++) {    // 别名逐个查
+      if (fieldHit(aliases[i], n)) return true;
+    }
+    return false;
+  }
+
+  function currentList() {
+    return ITEMS.filter(function (it) {
+      if (state.cat !== 'all' && it.cat !== state.cat) return false;
+      return matches(it, state.q);
+    });
+  }
+
+  /* 图标：有 it.img（如 icons/bark.png）就贴图，没有或加载失败就回落成分类色块 + 首字 */
+  function iconHTML(it, cls) {
+    var c = catColor(it.cat);
+    var letter = '<span class="fallback">' + esc(it.icon) + '</span>';
+    var img = it.img
+      ? '<img class="pxi" src="' + esc(it.img) + '" alt="' + esc(it.cn) + '" width="32" height="32" loading="lazy" onerror="this.remove()">'
+      : '';
+    return '<span class="' + cls + (it.img ? '' : ' no-img') + '" data-icon="' + esc(it.id) + '" style="background:' + c + '">' + letter + img + '</span>';
+  }
+
+  /* mats 只在真有配方材料时存在；origin 记录来源；二者都不写占位 */
+  var PENDING_SRC = /待核|待补充|以图鉴手册为准/;
+  function matKnown(it) { return !!(it.mats && it.mats.length); }
+  function srcKnown(it) {
+    if (it.origin) return true;
+    if (it.obtain && !PENDING_SRC.test(it.obtain)) return true;
+    return false;
+  }
+  function srcBadge(it) {
+    var k = srcKnown(it);
+    return '<i class="' + (k ? 'on' : 'no') + '" title="来源' + (k ? '已记' : '待核') + '">源</i>';
+  }
+
+  function cardHTML(it) {
+    var c = catColor(it.cat);
+    return '<button class="item-card" type="button" data-id="' + esc(it.id) + '" title="' + esc(it.cn + ' / ' + it.en) + '">' +
+      iconHTML(it, 'ico') +
+      '<span class="nm">' + esc(it.cn) + '</span>' +
+      '<span class="en">' + esc(it.en) + '</span>' +
+      '<span class="cat-tag" style="--c:' + c + '">' + esc(CATS[it.cat] ? CATS[it.cat].name : '未分类') + '</span>' +
+      '<span class="flags" title="图=配图；方=3×3 配方；散=无序合成；源=掉落/工序来源。亮=齐，灰虚线=待补">' +
+        '<i class="' + (it.img ? 'on' : 'no') + '" title="' + (it.img ? (it.imgApprox ? '配图已补（组继承方块贴图，非物品轮廓，点开见说明）' : '配图已补') : '配图待补') + '">图</i>' +
+        (it.shape === 'shapeless'
+          ? '<i class="' + (matKnown(it) ? 'on' : 'no') + '" title="无序合成·材料' + (matKnown(it) ? '已核' : '待核') + '">散</i>'
+          : (it.noGrid
+            ? srcBadge(it)
+            : '<i class="' + (it.grid ? 'on' : 'no') + '" title="配方' + (it.grid ? '已核实' : '待补充') + '">方</i>')) +
+      '</span>' +
+    '</button>';
+  }
+
+  function updateMeta() {
+    var total = state.list.length;
+    $('#metaCount').textContent = total;
+    $('#metaShown').textContent = state.shown;
+    if (state.shown >= total) {
+      $('#loadCount').textContent = total ? '已全部显示（' + total + ' 项）' : '没有匹配的物品';
+      $('#loadMore').style.display = 'none';
+    } else {
+      $('#loadCount').textContent = '已显示 ' + state.shown + ' / ' + total + ' 项';
+      $('#loadMore').style.display = '';
+    }
+  }
+
+  function appendBatch() {
+    var total = state.list.length;
+    if (state.shown >= total) { updateMeta(); return; }
+    var next = state.list.slice(state.shown, state.shown + BATCH);
+    grid.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+    state.shown += next.length;
+    updateMeta();
+  }
+
+  function renderItems() {
+    state.list = currentList();
+    state.shown = 0;
+    grid.innerHTML = '';
+    appendBatch();
+  }
+
+  /* 分类筛选按钮 */
+  var chips = $('#catChips');
+  chips.innerHTML =
+    '<button class="chip on" type="button" data-cat="all">全部</button>' +
+    catOrder.map(function (k) {
+      return '<button class="chip" type="button" data-cat="' + k + '">' + esc(CATS[k].name) + '</button>';
+    }).join('');
+
+  chips.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    state.cat = b.getAttribute('data-cat');
+    $$('.chip', chips).forEach(function (x) { x.classList.toggle('on', x === b); });
+    renderItems();
+  });
+
+  /* 搜索：输入即过滤 */
+  var searchInput = $('#searchInput');
+  searchInput.addEventListener('input', function () {
+    state.q = this.value.trim();
+    renderItems();
+  });
+  $('#clearSearch').addEventListener('click', function () {
+    searchInput.value = '';
+    state.q = '';
+    renderItems();
+    searchInput.focus();
+  });
+
+  /* 加载更多 + 滚动到底自动追加 */
+  $('#loadMore').addEventListener('click', appendBatch);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting && $('#view-items').classList.contains('on')) appendBatch();
+    }, { rootMargin: '160px' }).observe($('#sentinel'));
+  } else {
+    window.addEventListener('scroll', function () {
+      if ($('#view-items').classList.contains('on') &&
+          window.innerHeight + window.scrollY > document.body.offsetHeight - 220) appendBatch();
+    });
+  }
+
+  /* ======================================================================
+     四、物品详情弹层（大图标 + 中英文 + 别名 + 3×3 + 材料 + 效果 + 获取）
+     ====================================================================== */
+  var modal = $('#modal');
+
+  /* 材料名 -> 物品：先剥离「（…）」与「×N」再按中文名匹配，匹配不到返回 null */
+  function matItem(name) {
+    if (!name) return null;
+    var key = cleanMat(name);
+    return byCn[key] || byCn[String(name).trim()] || null;
+  }
+
+  function cellHTML(name) {
+    if (!name) return '<div class="cell"><span class="void"></span></div>';
+    var hit = matItem(name);
+    var c = hit ? catColor(hit.cat) : '#33C0C4';
+    /* 匹配不到时回落为该材料首字，保证格子不留空 */
+    var ch = (hit && hit.icon) ? hit.icon : (cleanMat(name).charAt(0) || '?');
+    return '<div class="cell filled" title="' + esc(name) + '">' +
+      '<span class="ico sm" style="background:' + c + ';color:#0B0D0F">' + esc(ch) + '</span>' +
+    '</div>';
+  }
+
+  /* 弹层打开时记住触发元素，关闭后焦点回到它——键盘用户不会掉到页面顶部 */
+  var lastFocus = null;
+
+  function openItem(id) {
+    var it = ITEMS.filter(function (x) { return x.id === id; })[0];
+    if (!it) return;
+
+    /* 大图标同样支持贴图：有 it.img 用图，否则保留分类色块 + 字 */
+    $('#modalIco').innerHTML = '<span class="fallback">' + esc(it.icon) + '</span>' +
+      (it.img ? '<img class="pxi" src="' + esc(it.img) + '" alt="' + esc(it.cn) + '" width="32" height="32" onerror="this.remove()">' : '');
+    $('#modalIco').style.background = catColor(it.cat);
+    $('#modalIco').setAttribute('data-icon', it.id);
+    $('#modalIco').classList.toggle('no-img', !it.img);
+    $('#modalTitle').textContent = it.cn;
+    $('#modalEn').textContent = it.en + ' · ' + (CATS[it.cat] ? CATS[it.cat].name : '未分类');
+    var aliasPart = (it.alias && it.alias.length) ? '别名：' + it.alias.join(' / ') : '别名：无';
+    var flagPart = '配图：' + (it.img ? '已补' : '待补') +
+      (it.shape === 'shapeless'
+        ? ' ｜ 散：无序合成 · ' + (matKnown(it) ? '材料已核' : '材料待核')
+        : (it.noGrid
+          ? ' ｜ 源：' + (srcKnown(it) ? '已记' : '待核')
+          : ' ｜ 方：' + (it.grid ? '已核实' : '待补充')));
+    $('#modalAlias').textContent = aliasPart + '\n' + flagPart;
+    /* 组继承来的贴图：图确实有、但不是物品轮廓，必须在这一处显式说明，不能只靠角标亮着 */
+    $('#modalImgNote').textContent = it.imgApprox
+      ? ('图为「' + (it.imgApproxFrom || '同类方块') + '」方块贴图，非物品轮廓')
+      : '';
+
+    /* 3×3：grid 为 null 时渲染全空网格并提示；无序合成不画网格，只出一行材料条 */
+    var shapeless = it.shape === 'shapeless';
+    var cells = [];
+    if (shapeless) {
+      var strip = (it.mats && it.mats.length) ? it.mats : ['待补充'];
+      $('#modalGrid').className = 'craft-grid shapeless';
+      $('#modalGrid').innerHTML = strip.map(function (m) {
+        return '<span class="sm-chip">' + esc(m) + '</span>';
+      }).join('');
+    } else {
+      $('#modalGrid').className = 'craft-grid';
+      if (Array.isArray(it.grid)) {
+        for (var r = 0; r < 3; r++) {
+          for (var c = 0; c < 3; c++) {
+            var row = it.grid[r] || [];
+            cells.push(cellHTML(row[c] || null));
+          }
+        }
+      } else {
+        for (var i = 0; i < 9; i++) cells.push(cellHTML(null));
+      }
+      $('#modalGrid').innerHTML = cells.join('');
+    }
+
+    /* 材料清单：没有材料就整列不出现，不写「待补充」占位 */
+    var mats = (it.mats && it.mats.length) ? it.mats : [];
+    /* 无序合成时材料条已经把「名字 + ×N」列全了，右侧清单列不再重复一遍 */
+    document.querySelector('.mats-col').style.display = (shapeless || !mats.length) ? 'none' : '';
+    $('#modalMats').innerHTML = mats.map(function (m, i) {
+      return '<li><b>' + String(i + 1).padStart(2, '0') + '</b><span>' + esc(m) + '</span></li>';
+    }).join('');
+
+    $('#originBlock').style.display = it.origin ? '' : 'none';
+    $('#modalOrigin').textContent = it.origin || '';
+
+    $('#modalEffect').textContent = it.effect || '待补充';
+    $('#modalObtain').textContent = it.obtain || '待补充';
+
+    /* 加工配方（坩埚/釜锅/磨石/锯…）：单列，不占「配方已核实」的口径 */
+    var proc = (it.proc && it.proc.length) ? it.proc : null;
+    $('#procBlock').style.display = proc ? '' : 'none';
+    if (proc) {
+      $('#modalProc').innerHTML = proc.map(function (p) {
+        return '<li>' + esc(p) + '</li>';
+      }).join('');
+    }
+
+    var hasGrid = Array.isArray(it.grid);
+    var hasProc = !!(it.proc && it.proc.length);
+    /* noGrid 条目本来就不经工作台合成：整块网格区收起来，避免 9 个空格子造成「配方缺失」的错觉 */
+    document.querySelector('.craft-area').style.display = it.noGrid ? 'none' : '';
+    $('#gridLabel').textContent = shapeless
+      ? '无序合成 · 材料任意摆放（无固定排布）'
+      : (hasGrid ? '合成网格 3 × 3' : '合成网格 3 × 3 · 待补充');
+    var pending = !(hasGrid || shapeless || hasProc || it.noGrid || it.origin);
+    var footText = pending
+      ? '<span class="pending">该物品的配方 / 数值尚未逐条核对，以图鉴手册为准。</span>'
+      : (shapeless
+        ? '无序合成：材料摆放顺序不影响产物；配方来自 class 文件反编译。'
+        : (hasGrid
+          ? '配方为社区整理，仅供定位；精确排布与数量以图鉴手册为准。'
+          : (hasProc
+            ? '该物品不经工作台合成，产出方式见上方「加工配方」。'
+            : (it.origin
+              ? '该物品不经工作台合成，来源见上方「来源」。'
+              : (it.obtain && it.obtain !== '以图鉴手册为准。' && it.obtain !== '待补充'
+                ? '该物品不经工作台合成，获取方式见上方「获取方式」。'
+                : '该物品不经工作台合成，来源待核。')))));
+    $('#modalFoot').innerHTML = footText;
+
+    modal.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    $('#sheet').scrollTop = 0;
+    lastFocus = document.activeElement && document.activeElement !== document.body
+      ? document.activeElement : null;
+    $('#modalClose').focus();
+  }
+
+  function closeModal() {
+    modal.classList.remove('on');
+    document.body.style.overflow = '';
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    lastFocus = null;
+  }
+
+  /* 弹层内的焦点循环：Tab / Shift+Tab 只在弹层内来回走，不会跑到背后的列表 */
+  function trapTab(e) {
+    var nodes = Array.prototype.slice.call(
+      modal.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ).filter(function (n) { return n.offsetParent !== null; });
+    if (!nodes.length) return;
+    var first = nodes[0], last = nodes[nodes.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  grid.addEventListener('click', function (e) {
+    var card = e.target.closest('.item-card');
+    if (card) openItem(card.getAttribute('data-id'));
+  });
+  $('#modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) {
+    if (!modal.classList.contains('on')) return;
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key === 'Tab') trapTab(e);
+  });
+
+  /* ======================================================================
+     五、合成速查（选材料 -> 列出产物，每行一句）
+     ====================================================================== */
+  function cleanMat(m) { return String(m).replace(/[（(].*?[）)]/g, '').replace(/×\s*\d+/g, '').trim(); }
+
+  var matNames = [];
+  (function collectMats() {
+    var set = {};
+    ITEMS.forEach(function (it) {
+      (it.mats || []).forEach(function (m) {
+        var n = cleanMat(m);
+        if (!n || n === '待补充' || n.indexOf('掉落') > -1) return;
+        set[n] = true;
+      });
+    });
+    matNames = Object.keys(set).sort(function (a, b) { return a.localeCompare(b, 'zh'); });
+  })();
+
+  var sel = $('#matSelect');
+  sel.innerHTML = '<option value="">— 请选择一个材料 —</option>' +
+    matNames.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
+
+  function renderCraft(mat) {
+    var box = $('#craftResult');
+    if (!mat) { box.innerHTML = '<div class="empty">先在上方选择一个材料，这里会列出它能参与合成的全部物品。</div>'; return; }
+    var hits = ITEMS.filter(function (it) {
+      return (it.mats || []).some(function (m) { return cleanMat(m) === mat; });
+    });
+    if (!hits.length) {
+      box.innerHTML = '<div class="empty">没有找到用到「' + esc(mat) + '」的条目，换一个材料试试。</div>';
+      return;
+    }
+    box.innerHTML = '<p class="guide-note" style="margin-bottom:14px">「' + esc(mat) + '」可参与 ' + hits.length + ' 个合成：</p>' +
+      hits.map(function (it) {
+        return '<div class="craft-row">' +
+          '<span class="n">' + esc(it.cn) + '</span>' +
+          '<span class="formula">← ' + esc((it.mats || []).join(' + ')) + '</span>' +
+        '</div>';
+      }).join('');
+  }
+  sel.addEventListener('change', function () { renderCraft(this.value); });
+  renderCraft('');
+
+  /* ======================================================================
+     六、攻略：列表 -> 阅读器（左目录锚点 + 右内容流）
+     ====================================================================== */
+  $('#guideGrid').innerHTML = GUIDES.map(function (g, i) {
+    return '<button class="gcard" type="button" data-guide="' + i + '">' +
+      '<span class="gcat">' + esc(g.cat) + '</span>' +
+      '<h3>' + esc(g.title) + '</h3>' +
+      '<p>' + esc(g.brief) + '</p>' +
+      '<span class="gmeta"><span>阅读 ' + esc(g.time) + '</span><span>' + esc(g.sections.length) + ' 节</span></span>' +
+      '<span class="gmeta" style="border-top:0;padding-top:0;margin-top:0"><span>出处：' + esc(g.series) + '</span></span>' +
+    '</button>';
+  }).join('');
+
+  function openGuide(idx) {
+    var g = GUIDES[idx];
+    if (!g) return;
+    state.current = idx;
+
+    $('#readerTitle').textContent = g.title + '　·　' + g.cat;
+
+    $('#readerToc').innerHTML = g.sections.map(function (s, i) {
+      return '<li><a href="#sec-' + idx + '-' + i + '"><b>' + esc(s.no) + '</b><span>' + esc(s.title) + '</span></a></li>';
+    }).join('');
+
+    $('#readerSections').innerHTML = g.sections.map(function (s, i) {
+      return '<article class="sec-card" id="sec-' + idx + '-' + i + '">' +
+        '<span class="no">' + esc(s.no) + '</span>' +
+        '<h3>' + esc(s.title) + '</h3>' +
+        '<p>' + esc(s.body) + '</p>' +
+      '</article>';
+    }).join('') +
+      '<p class="guide-note">' +
+        (g.series === '社区整理'
+          ? '注：本篇未附原始出处——内容按模组机制与图鉴条目整理，概率、耗时与配比以图鉴手册为准。'
+          : '出处：' + esc(g.series) + '。文中概率、耗时与配比未逐条核对，以图鉴手册为准。') +
+      '</p>' +
+      '<p style="margin-top:8px"><button class="btn sm ghost" type="button" id="backBottom">← 返回攻略列表</button></p>';
+
+    $('#guideList').style.display = 'none';
+    $('#reader').classList.add('on');
+    window.scrollTo(0, 0);
+
+    var bb = $('#backBottom');
+    if (bb) bb.addEventListener('click', backToList);
+  }
+
+  function backToList() {
+    $('#reader').classList.remove('on');
+    $('#guideList').style.display = '';
+    window.scrollTo(0, 0);
+  }
+
+  $('#guideGrid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-guide]');
+    if (b) openGuide(Number(b.getAttribute('data-guide')));
+  });
+  $('#backToList').addEventListener('click', backToList);
+
+  /* ======================================================================
+     七、初始化
+     ====================================================================== */
+  /* 收录条数统一取数据文件实际长度，避免文案与数据脱节
+     ITEMS = 已收录、参与渲染的条目；BTW_ITEMS_ARCHIVE = 待补归档条目（不渲染） */
+  var ARCHIVE = window.BTW_ITEMS_ARCHIVE || [];
+  var TOTAL_ALL = ITEMS.length + ARCHIVE.length;
+  $('#totalOurs').textContent = ITEMS.length;
+  $('#totalPending').textContent = ARCHIVE.length;
+  $('#introCount').textContent = ITEMS.length;
+  $('#introPending').textContent = ARCHIVE.length;
+  $('#statItems').textContent = ITEMS.length;
+  $('#statPending').textContent = ARCHIVE.length;
+  $('#heroTotal').textContent = TOTAL_ALL;
+  $('#heroShown').textContent = ITEMS.length;
+  /* 配方已核实只数主数组：归档不渲染，算进去会和页面脱钩（verify 第 12 条也断了这条路） */
+  var GRID_OK = ITEMS.filter(function (x) {
+    if (x.grid) return true;
+    return x.shape === 'shapeless' && x.mats && x.mats[0] && x.mats[0] !== '待补充';
+  }).length;
+  $('#gridVerified').textContent = GRID_OK;
+  /* 加工配方（proc）同样只数主数组：归档不渲染，算进去就是同一个虚涨 */
+  var PROC_OK = ITEMS.reduce(function (s, x) {
+    return s + (x.proc || []).filter(function (p) { return p.indexOf('另有') !== 0; }).length;
+  }, 0);
+  $('#procVerified').textContent = PROC_OK;
+  $('#progText').textContent = '配方已核实 ' + GRID_OK + ' 项 · 加工配方 ' + PROC_OK + ' 条 · 收录 ' + ITEMS.length + ' / 待补 ' + ARCHIVE.length;
+  $('#progBar').style.width = (TOTAL_ALL ? Math.round(ITEMS.length / TOTAL_ALL * 100) : 0) + '%';
+
+  renderItems();
+  go((location.hash || '#home').slice(1), false);
+
+  /* 吸顶偏移量：导航高度随字号/换行变化（手机上可能两行），写死 62px 会让阅读页顶部栏压住它。
+     这里量实际高度写进 --navh，.reader-top 与 .toc 都用它。 */
+  function syncNavHeight() {
+    var nav = document.querySelector('.nav');
+    if (!nav) return;
+    document.documentElement.style.setProperty('--navh', nav.offsetHeight + 'px');
+  }
+  syncNavHeight();
+  window.addEventListener('resize', syncNavHeight);
+  window.addEventListener('orientationchange', function () { setTimeout(syncNavHeight, 120); });
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncNavHeight); }
+
+})();
+</script>
+</body>
+</html>
