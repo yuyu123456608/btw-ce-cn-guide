@@ -19,6 +19,7 @@ _backup_原始/
 *.txt
 *.md
 *.json
+!/README.md
 !docs/README.md
 
 # 备份与探针
