@@ -1,0 +1,30 @@
+# 只发布 dist/ 里的 5 项（index.html / items.js / guides.js / icons/ / og.png）
+# 站点根的源文件是「制作现场」，不进仓库：Pages 从 /dist 出站，
+# 仓库公开时根目录的文件会变成可下载的 raw URL，没必要重复公开一份。
+
+/index.html
+/items.js
+/guides.js
+/og.png
+/icons/
+
+# 本地工作产物：反编译输出、贴图池、备份、探针截图
+tools/
+_probe/
+_sf/
+_rl/
+_backup_原始/
+
+# 反编译与证据文本（README.md 例外：它是发布物的一部分）
+*.txt
+*.md
+*.json
+!dist/README.md
+
+# 备份与探针
+_items_before_*.js
+_*.png
+_*.html
+_*.js
+_*.bin
+_edgep*/
