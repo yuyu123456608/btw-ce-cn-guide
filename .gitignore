@@ -25,6 +25,8 @@ _backup_原始/
 !docs/README.md
 # 字体许可必须随字体发布（OFL-1.1 要求），文档类的 *.txt 通配不能把它挡掉
 !docs/fonts/OFL.txt
+# robots.txt 同样是发布物：*.txt 通配会把它挡在仓库外，线上直接 404
+!docs/robots.txt
 
 # 备份与探针
 _items_before_*.js
