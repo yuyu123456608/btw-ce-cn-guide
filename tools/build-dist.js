@@ -15,9 +15,23 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'docs');
 const args = process.argv.slice(2);
 const opt = k => { const a = args.find(x => x.startsWith('--' + k + '=')); return a ? a.split('=').slice(1).join('=') : ''; };
-const USER = opt('user');
-const REPO = opt('repo') || 'btw-ce-cn-guide';
+/* --user/--repo 决定 og:image / og:url / 404 回链三处绝对地址。
+   CI 里从 github.repository 推导（环境变量 GITHUB_REPOSITORY=owner/repo），不硬编码；
+   显式传参优先，传了但与 CI 推导值不一致时直接失败——错参数构建出的产物不能上线。 */
+const envRepo = String(process.env.GITHUB_REPOSITORY || '').trim();   // "owner/repo"
+const [envUser, envName] = envRepo ? envRepo.split('/') : ['', ''];
+const USER = opt('user') || envUser;
+const REPO = opt('repo') || envName || 'btw-ce-cn-guide';
+if (envRepo && opt('user') && opt('user') !== envUser) {
+  console.error(`--user=${opt('user')} 与 CI 仓库所有者 ${envUser} 不一致：产物里的 og/404 会指错站`);
+  process.exit(1);
+}
+if (envRepo && opt('repo') && opt('repo') !== envName) {
+  console.error(`--repo=${opt('repo')} 与 CI 仓库名 ${envName} 不一致：产物里的 og/404 会指错站`);
+  process.exit(1);
+}
 const OG_URL = USER ? `https://${USER}.github.io/${REPO}/` : '';
+console.log(`og 绝对地址：${OG_URL || '（未定，og 退回相对路径）'}${envRepo ? '（由 GITHUB_REPOSITORY 推导）' : '（本地显式传参）'}`);
 
 /* 全部数字从数据源算，README 与 404 里不写死任何计数。
    口径与 verify 第 25 / 28 条完全一致：改数据后三个文件同步，不需要手改。 */
@@ -42,10 +56,19 @@ function copy(src, dst) {
   fs.copyFileSync(src, dst);
 }
 
-/* 1. 拷文件 */
+/* 1. 拷文件
+   文本文件统一成 LF 再发：Windows 工作区是 CRLF、CI 检出是 LF，
+   同一份源会产出不同字节数——artifact 就成了「跟谁构建有关」的东西，smoke 的字节基准也没法用。 */
+function copyText(src, dst) {
+  fs.mkdirSync(path.dirname(dst), { recursive: true });
+  fs.writeFileSync(dst, fs.readFileSync(src, 'utf8').replace(/\r\n/g, '\n'));
+}
+
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(path.join(DIST, 'icons'), { recursive: true });
-for (const f of ['items.js', 'guides.js', 'og.png']) copy(path.join(ROOT, f), path.join(DIST, f));
+copyText(path.join(ROOT, 'items.js'), path.join(DIST, 'items.js'));
+copyText(path.join(ROOT, 'guides.js'), path.join(DIST, 'guides.js'));
+copy(path.join(ROOT, 'og.png'), path.join(DIST, 'og.png'));
 const icons = fs.readdirSync(path.join(ROOT, 'icons')).filter(f => f.endsWith('.png'));
 icons.forEach(f => copy(path.join(ROOT, 'icons', f), path.join(DIST, 'icons', f)));
 /* 像素字体与许可原件必须同发布：OFL-1.1 要求分发字体时随附许可文本 */
@@ -53,7 +76,7 @@ const fontFiles = fs.readdirSync(path.join(ROOT, 'fonts'));
 fontFiles.forEach(f => copy(path.join(ROOT, 'fonts', f), path.join(DIST, 'fonts', f)));
 
 /* 2. index.html：改 og，插标记 */
-let html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+let html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').replace(/\r\n/g, '\n');
 if (OG_URL) {
   html = html.replace('<meta property="og:image" content="og.png">', `<meta property="og:image" content="${OG_URL}og.png">`);
   html = html.replace('<meta name="twitter:image" content="og.png">', `<meta name="twitter:image" content="${OG_URL}og.png">`);
@@ -102,12 +125,12 @@ Minecraft 1.6.4 整合包「德爷生存」（Better Than Wolves Community Editi
 
 \`\`\`bash
 node tools/build-dist.js --user=${USER || '<用户名>'} --repo=${REPO}   # 本地预览用：生成 docs/
-node tools/verify.js                                                  # 32 条断言，不过不许提交
+node tools/verify.js                                                  # 33 条断言，不过不许提交
 node tools/smoke.js                                                   # 可选：对线上逐个 GET 核对
 git add . && git commit -m "..." && git push                          # push 后 CI 构建 → 校验 → 部署 → smoke
 \`\`\`
 
-部署链路（\`.github/workflows/deploy.yml\`）：build → verify 32 条 → upload-pages-artifact(\`docs\`) → deploy-pages → 对线上 9 个 URL + 自定义 404 页跑 smoke。**校验不过就不会部署**，坏版本进不了线上。
+部署链路（\`.github/workflows/deploy.yml\`）：build → verify 33 条 → upload-pages-artifact(\`docs\`) → deploy-pages → 对线上 9 个 URL + 自定义 404 页跑 smoke（字节数读构建产出的 \`tools/sizes.json\`，并抓 index.html / items.js 做内容断言：og 绝对地址、countGuard 各数字与数组实长、404 文案总数）。**校验不过就不会部署**，坏版本进不了线上。
 
 \`--user\` / \`--repo\` 每次都带：少了 og:image 会退回相对路径，第 27 条会当场拦下。
 `;
@@ -183,7 +206,17 @@ fs.writeFileSync(path.join(ROOT, 'tools', 'dist-manifest.json'), JSON.stringify(
 const total = fs.readdirSync(DIST, { recursive: true }).filter(f => fs.statSync(path.join(DIST, f)).isFile()).length;
 const size = fs.readdirSync(DIST, { recursive: true }).filter(f => fs.statSync(path.join(DIST, f)).isFile())
   .reduce((s, f) => s + fs.statSync(path.join(DIST, f)).size, 0);
+
+/* 4b. tools/sizes.json —— smoke 要核对的「线上字节数」真值，由构建产物自己生成。
+   以前 smoke 里的字节区间是手写常量，数据一变就得人手调：漏调就误报或漏报。
+   现在只有这一处真值，smoke 直接按精确字节比对。 */
+const SMOKE_FILES = ['index.html', 'items.js', 'guides.js', 'og.png', '404.html', 'fonts/pixel.woff2', 'fonts/OFL.txt', 'robots.txt', 'sitemap.xml'];
+const sizes = {};
+SMOKE_FILES.forEach(f => { const p = path.join(DIST, f); if (fs.existsSync(p)) sizes[f] = fs.statSync(p).size; });
+fs.writeFileSync(path.join(ROOT, 'tools', 'sizes.json'), JSON.stringify({ builtAt, ogUrl: OG_URL, sizes }, null, 2) + '\n');
+
 console.log(`docs 已重建：${total} 文件 / ${(size / 1024).toFixed(1)} KB / icons ${icons.length}`);
 console.log(`og:image = ${OG_URL ? OG_URL + 'og.png' : '（相对路径 og.png，等域名确定后带 --user 重跑）'}`);
+console.log(`smoke 基准：tools/sizes.json（${Object.keys(sizes).length} 项）`);
 console.log(`标记：${marker}`);
 

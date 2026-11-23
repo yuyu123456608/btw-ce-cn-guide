@@ -32,11 +32,11 @@ Minecraft 1.6.4 整合包「德爷生存」（Better Than Wolves Community Editi
 
 ```bash
 node tools/build-dist.js --user=yuyu123456608 --repo=btw-ce-cn-guide   # 本地预览用：生成 docs/
-node tools/verify.js                                                  # 32 条断言，不过不许提交
+node tools/verify.js                                                  # 33 条断言，不过不许提交
 node tools/smoke.js                                                   # 可选：对线上逐个 GET 核对
 git add . && git commit -m "..." && git push                          # push 后 CI 构建 → 校验 → 部署 → smoke
 ```
 
-部署链路（`.github/workflows/deploy.yml`）：build → verify 32 条 → upload-pages-artifact(`docs`) → deploy-pages → 对线上 9 个 URL + 自定义 404 页跑 smoke。**校验不过就不会部署**，坏版本进不了线上。
+部署链路（`.github/workflows/deploy.yml`）：build → verify 33 条 → upload-pages-artifact(`docs`) → deploy-pages → 对线上 9 个 URL + 自定义 404 页跑 smoke（字节数读构建产出的 `tools/sizes.json`，并抓 index.html / items.js 做内容断言：og 绝对地址、countGuard 各数字与数组实长、404 文案总数）。**校验不过就不会部署**，坏版本进不了线上。
 
 `--user` / `--repo` 每次都带：少了 og:image 会退回相对路径，第 27 条会当场拦下。

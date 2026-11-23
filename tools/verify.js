@@ -103,7 +103,12 @@ if (fs.existsSync(TEXPOOL_INDEX)) {
       }
     })(poolDir);
     if (actual.length !== texpoolFiles.size) {
-      warn.push(`texpool-index.json 有 ${texpoolFiles.size} 项，实际目录 ${actual.length} 项：重跑 node tools/texpool-index.js`);
+      /* 必须是 error：CI 完全信任这份索引，索引与目录不一致就等于判据失效。
+         warn 在 CI 里等于不存在（没人会去看一条黄色提示）。 */
+      errors.push(`texpool-index.json 有 ${texpoolFiles.size} 项，实际目录 ${actual.length} 项：索引已过期，重跑 node tools/texpool-index.js 并提交`);
+    } else {
+      const missingInDir = [...texpoolFiles].filter(f => !actual.includes(f));
+      if (missingInDir.length) errors.push(`texpool-index.json 里有 ${missingInDir.length} 条在目录中找不到（如 ${missingInDir[0]}）：索引已过期`);
     }
   }
 } else {
@@ -657,6 +662,27 @@ if (greyWithMats.length) {
   const txt = fs.readFileSync(rb, 'utf8');
   if (!new RegExp(`Sitemap: ${ogUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}sitemap\\.xml`).test(txt))
     errors.push(`robots.txt 的 Sitemap 行不是 ${ogUrl}sitemap.xml`);
+})();
+
+/* 33. 产物里的绝对地址必须等于「由仓库推导出的站点根」（2026-11-24 加）
+   og:image / og:url / 404 回链三处全靠 --user/--repo 两个参数，是条一旦传错就毁全站的隐线。
+   CI 由 GITHUB_REPOSITORY 推导；这里在 CI 里回验产物，参数不再只是「相信它传对了」。
+   本地没有这个环境变量时跳过——本地要么显式传参，要么本来就不发布。 */
+(function checkDerivedUrl() {
+  const repo = String(process.env.GITHUB_REPOSITORY || '').trim();
+  if (!repo) return;
+  const [owner, name] = repo.split('/');
+  const want = `https://${owner}.github.io/${name}/`;
+  const mf = path.join(root, 'tools', 'dist-manifest.json');
+  if (!fs.existsSync(mf)) { errors.push('dist-manifest.json 缺失，无法核对产物地址'); return; }
+  const m = JSON.parse(fs.readFileSync(mf, 'utf8'));
+  if (m.ogUrl !== want) errors.push(`manifest 的 ogUrl 是 ${m.ogUrl || '空'}，按仓库推导应为 ${want}`);
+  const html = fs.readFileSync(path.join(root, 'docs', 'index.html'), 'utf8');
+  [['og:image', `${want}og.png`], ['og:url', want]].forEach(([prop, val]) => {
+    if (!html.includes(`property="${prop}" content="${val}"`)) errors.push(`docs/index.html 的 ${prop} 不是 ${val}`);
+  });
+  const h404 = fs.readFileSync(path.join(root, 'docs', '404.html'), 'utf8');
+  if (!h404.includes(`href="${want}"`)) errors.push(`docs/404.html 的回站链接不是 ${want}`);
 })();
 
 /* 统计输出 */

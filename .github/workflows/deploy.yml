@@ -1,8 +1,9 @@
 name: build-verify-deploy
 
-# 只要源进 main，就走一条确定的链路：构建 → 32 条断言 → 发布 artifact → 部署 → 线上 smoke。
-# 关键点：校验不过就不部署。以前「本地是过的」是唯一保障，仓库存的是 143 个构建副本；
-# 现在仓库只存源，产物由这里生成，线上是否存在由 smoke 逐个 URL 证明。
+# 源进 main 就走一条确定的链路：构建 → 断言 → 发布 artifact → 部署 → 线上 smoke。
+# 关键点：校验不过就不产出 artifact、不部署。以前「本地是过的」是唯一保障；
+# 现在仓库只存源，产物由这里生成，线上是否存在、数字对不对由 smoke 逐个 URL 证明。
+# og/404 的绝对地址由 GITHUB_REPOSITORY 推导（build-dist 内置），不在这里硬编码。
 
 on:
   push:
@@ -27,16 +28,23 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 构建 docs/
-        run: node tools/build-dist.js --user=${{ github.repository_owner }} --repo=${{ github.event.repository.name }}
+      - name: 构建 docs/（站点根由 GITHUB_REPOSITORY 推导）
+        run: node tools/build-dist.js
 
-      - name: 校验 32 条断言
+      - name: 校验（33 条断言，含产物地址回验）
         run: node tools/verify.js
 
       - name: 上传 Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs
+
+      - name: 上传 smoke 的字节基准
+        uses: actions/upload-artifact@v4
+        with:
+          name: sizes
+          path: tools/sizes.json
+          if-no-files-found: error
 
   deploy:
     needs: build
@@ -56,7 +64,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: 线上逐个 URL 核对（CDN 有延迟，最多重试 10 次）
+      - name: 取回字节基准
+        uses: actions/download-artifact@v4
+        with:
+          name: sizes
+          path: tools
+      - name: 线上逐个 URL + 内容断言（CDN 有延迟，最多重试 10 次）
         env:
           BASE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: |
