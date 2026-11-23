@@ -20,7 +20,7 @@ Minecraft 1.6.4 · Better Than Wolves Community Edition **3.1.1** 的中文物�
 
 - `index.html` — 站点页面（单文件，含样式与逻辑）
 - `items.js` — 物品数据（`BTW_ITEMS` 141 条 / `BTW_ITEMS_ARCHIVE` 57 条）
-- `guides.js` — 7 篇生存路线
+- `guides.js` — 生存路线
 - `icons/` — 物品图标
 - `og.png` — 社交分享卡片（1200×630）
 
