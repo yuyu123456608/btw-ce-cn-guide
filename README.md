@@ -32,7 +32,7 @@ Minecraft 1.6.4 整合包「德爷生存」（Better Than Wolves Community Editi
 
 ```bash
 node tools/build-dist.js --user=yuyu123456608 --repo=btw-ce-cn-guide   # 重建 docs/，写入绝对 og URL
-node tools/verify.js                                                  # 31 条断言，不过不许提交
+node tools/verify.js                                                  # 32 条断言，不过不许提交
 git add . && git commit -m "..." && git push
 ```
 
