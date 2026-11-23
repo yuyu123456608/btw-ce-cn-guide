@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- dist-built: 2026-11-23T15:58:43Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
+<!-- dist-built: 2026-11-23T16:14:06Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>德爷生存 · Better Than Wolves 中文图鉴站</title>
@@ -20,6 +20,7 @@
 <meta property="og:image:alt" content="德爷生存 · BTW 中文图鉴站：物品图鉴、合成速查与生存路线">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://yuyu123456608.github.io/btw-ce-cn-guide/og.png">
+
 <style>
 /* 像素字体：随站打包（Fusion Pixel 12px Monospaced 子集，OFL-1.1）。
    仅含本站用到的字符，43 KB；许可原件见 fonts/OFL.txt。 */
@@ -76,9 +77,9 @@ button{font-family:inherit;color:inherit}
 .logo-mark{
   width:38px;height:38px;display:grid;place-items:center;background:var(--grass);
   border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink),inset -4px -4px 0 var(--grass-d),inset 4px 4px 0 var(--grass-l);
-  font-family:var(--px);font-size:16px;color:#0F2A08;font-weight:700;
+  font-family:var(--px);font-size:24px;color:#0F2A08;font-weight:700;
 }
-.logo-txt{font-family:var(--px);font-size:15px;letter-spacing:2px;color:var(--text);text-shadow:2px 2px 0 #000}
+.logo-txt{font-family:var(--px);font-size:24px;letter-spacing:2px;color:var(--text);text-shadow:2px 2px 0 #000}
 .logo-txt small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:1px;color:var(--diamond);text-shadow:none;margin-top:2px}
 .nav-links{display:flex;align-items:center;gap:6px;margin-left:auto;flex-wrap:wrap}
 .nav-links a{padding:8px 12px;font-size:14px;font-weight:600;color:var(--muted);border:3px solid transparent;transition:color .15s}
@@ -106,7 +107,7 @@ button{font-family:inherit;color:inherit}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   padding:13px 22px;min-height:48px;background:var(--grass);color:#0C2204;
-  font-weight:800;font-size:15px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+  font-weight:800;font-size:24px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
   border-radius:0;cursor:pointer;letter-spacing:1px;font-family:var(--px);
   transition:transform .08s,box-shadow .08s,background .15s;
 }
@@ -114,7 +115,7 @@ button{font-family:inherit;color:inherit}
 .btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
 .btn.ghost{background:var(--rock-2);color:var(--text)}
 .btn.ghost:hover{background:var(--rock-3);color:var(--diamond)}
-.btn.sm{padding:8px 14px;min-height:38px;font-size:13px;box-shadow:4px 4px 0 var(--ink)}
+.btn.sm{padding:8px 14px;min-height:38px;font-size:12px;box-shadow:4px 4px 0 var(--ink)}
 .card{background:var(--rock-2);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:20px}
 .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
@@ -122,11 +123,11 @@ button{font-family:inherit;color:inherit}
 .mec-ico{
   flex:0 0 46px;width:46px;height:46px;display:grid;place-items:center;border:3px solid var(--ink);
   background:var(--grass);box-shadow:inset -4px -4px 0 var(--grass-d),inset 4px 4px 0 var(--grass-l);
-  font-family:var(--px);font-size:16px;color:#0F2A08;
+  font-family:var(--px);font-size:24px;color:#0F2A08;
 }
 .mec h3{font-size:15px;font-weight:800;margin-bottom:6px;color:var(--text);letter-spacing:.5px}
 .mec p{font-size:13px;color:var(--muted);line-height:1.7}
-.mec-code{position:absolute;right:10px;top:8px;font-family:var(--px);font-size:9px;color:var(--rock-3)}
+.mec-code{position:absolute;right:10px;top:8px;font-family:var(--sans);font-size:11px;color:var(--rock-3)}
 
 /* ============================================================
    3. Hero
@@ -145,7 +146,7 @@ button{font-family:inherit;color:inherit}
   background-size:6px 6px;opacity:.35;
 }
 .hero-badge{
-  display:inline-block;position:relative;z-index:2;font-family:var(--px);font-size:11px;
+  display:inline-block;position:relative;z-index:2;font-family:var(--sans);font-size:12px;
   letter-spacing:2px;background:var(--ink);color:var(--diamond);padding:7px 12px;
   border:3px solid var(--diamond);margin-bottom:22px;
 }
@@ -163,7 +164,7 @@ button{font-family:inherit;color:inherit}
   border:3px solid var(--ink);background:rgba(11,13,15,.55);box-shadow:4px 4px 0 var(--ink);
   width:fit-content;margin-left:auto;margin-right:auto;
 }
-.hero-strip span{padding:8px 16px;font-family:var(--px);font-size:11px;letter-spacing:1px;color:var(--text);border-right:3px solid var(--ink)}
+.hero-strip span{padding:8px 16px;font-family:var(--sans);font-size:12px;letter-spacing:1px;color:var(--text);border-right:3px solid var(--ink)}
 .hero-strip span:last-child{border-right:0}
 .hero-strip b{color:var(--diamond)}
 /* 收录进度条：已核对 / 待补 可视化，像素风直角块 */
@@ -173,8 +174,8 @@ button{font-family:inherit;color:inherit}
 }
 .prog i{display:block;height:100%;width:0;background:var(--grass);transition:width .4s steps(8,end)}
 .prog-text{
-  position:relative;z-index:2;margin:10px auto 0;text-align:center;font-family:var(--px);
-  font-size:10px;letter-spacing:1px;color:#E7EDE2;text-shadow:1px 1px 0 rgba(0,0,0,.6);
+  position:relative;z-index:2;margin:10px auto 0;text-align:center;font-family:var(--sans);
+  font-size:11px;letter-spacing:1px;color:#E7EDE2;text-shadow:1px 1px 0 rgba(0,0,0,.6);
 }
 
 /* ============================================================
@@ -183,7 +184,7 @@ button{font-family:inherit;color:inherit}
 .toolbar{background:var(--rock-2);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:16px;margin-bottom:22px}
 .search-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .search-box{position:relative;flex:1 1 280px;display:flex;align-items:center;background:var(--rock-d);border:3px solid var(--ink)}
-.search-box span{padding:0 10px;font-family:var(--px);font-size:13px;color:var(--diamond)}
+.search-box span{padding:0 10px;font-family:var(--px);font-size:12px;color:var(--diamond)}
 .search-box input{flex:1;min-width:0;border:0;background:transparent;color:var(--text);font-size:15px;padding:12px 8px 12px 0;outline:none;font-family:var(--sans)}
 .search-box input::placeholder{color:#6C757C}
 .search-box:focus-within{border-color:var(--diamond);box-shadow:0 0 0 3px rgba(51,192,196,.2)}
@@ -211,7 +212,7 @@ button{font-family:inherit;color:inherit}
 .item-card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
 .ico{
   width:56px;height:56px;display:grid;place-items:center;border:3px solid var(--ink);
-  font-family:var(--px);font-size:20px;font-weight:700;color:#0B0D0F;flex:0 0 auto;
+  font-family:var(--px);font-size:24px;font-weight:700;color:#0B0D0F;flex:0 0 auto;
   box-shadow:inset -5px -5px 0 rgba(0,0,0,.32),inset 5px 5px 0 rgba(255,255,255,.28);
   position:relative;overflow:hidden;
 }
@@ -227,17 +228,17 @@ button{font-family:inherit;color:inherit}
   font-family:var(--sans,inherit);font-size:8px;font-weight:700;line-height:1;
   padding:2px 3px;background:#0B0D0F;color:#F4EFE3;letter-spacing:.5px;
 }
-.ico.sm{width:40px;height:40px;font-size:15px}
+.ico.sm{width:40px;height:40px;font-size:12px}
 .item-card .nm{font-size:14px;font-weight:800;color:var(--text);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 .item-card .en{font-size:11px;color:#8B949B;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;margin-top:-4px}
 .cat-tag{align-self:flex-start;font-size:10.5px;font-weight:700;padding:2px 7px;border:2px solid currentColor;color:var(--c,#33C0C4);letter-spacing:.5px}
 /* 状态角标：图 = 配图，方 = 配方。亮=齐，灰=待补，一眼看出每条缺什么 */
 .flags{display:flex;gap:5px;margin-top:1px}
-.flags i{font-style:normal;font-family:var(--px);font-size:9px;line-height:1;padding:3px 4px;border:2px solid #5A5F61;color:#8A8F91;letter-spacing:.5px}
+.flags i{font-style:normal;font-family:var(--sans);font-size:11px;line-height:1;padding:3px 4px;border:2px solid #5A5F61;color:#8A8F91;letter-spacing:.5px}
 .flags i.on{border-color:#7BD37B;color:#9BF09B}
 .flags i.no{border-style:dashed}
 .load-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 0 44px}
-.load-wrap .count{font-family:var(--px);font-size:11px;color:var(--muted);letter-spacing:1px}
+.load-wrap .count{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:1px}
 .sentinel{width:100%;height:1px}
 
 /* ============================================================
@@ -268,7 +269,7 @@ select{
   padding:18px;cursor:pointer;transition:transform .12s,box-shadow .12s;
 }
 .gcard:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
-.gcard .gcat{align-self:flex-start;font-family:var(--px);font-size:10px;letter-spacing:1px;background:var(--dirt);color:#2A1603;padding:4px 8px;border:2px solid var(--ink)}
+.gcard .gcat{align-self:flex-start;font-family:var(--sans);font-size:11px;letter-spacing:1px;background:var(--dirt);color:#2A1603;padding:4px 8px;border:2px solid var(--ink)}
 .gcard h3{font-size:16px;font-weight:800;line-height:1.4;color:var(--text)}
 .gcard p{font-size:13px;color:var(--muted);line-height:1.7}
 .gcard .gmeta{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:#8B949B;border-top:2px dashed #3A4046;padding-top:10px;margin-top:auto}
@@ -276,14 +277,14 @@ select{
 .reader.on{display:block}
 .reader-top{position:sticky;top:var(--navh,66px);z-index:40;background:rgba(21,23,27,.97);border-bottom:3px solid var(--ink);padding:12px 0;margin-bottom:24px}
 .reader-top-in{display:flex;gap:14px;align-items:center;flex-wrap:wrap;max-width:1120px;margin:0 auto;padding:0 16px}
-.reader-title{font-family:var(--px);font-size:14px;letter-spacing:1px;color:var(--text);flex:1 1 220px;min-width:0}
+.reader-title{font-family:var(--px);font-size:24px;letter-spacing:1px;color:var(--text);flex:1 1 220px;min-width:0}
 .reader-body{display:grid;grid-template-columns:230px minmax(0,1fr);gap:26px;align-items:start;padding-bottom:40px}
 .toc{position:sticky;top:calc(var(--navh,66px) + 70px);align-self:start;background:var(--rock-2);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:14px}
-.toc h4{font-family:var(--px);font-size:11px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px}
+.toc h4{font-family:var(--sans);font-size:12px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px}
 .toc ol{list-style:none;display:flex;flex-direction:column;gap:4px}
 .toc a{display:flex;gap:8px;padding:7px 8px;font-size:12.5px;color:var(--muted);border-left:4px solid transparent;line-height:1.5}
 .toc a:hover{color:var(--text);background:var(--rock-d);border-left-color:var(--grass)}
-.toc a b{font-family:var(--px);color:var(--diamond);font-size:10px;flex:0 0 auto}
+.toc a b{font-family:var(--sans);color:var(--diamond);font-size:11px;flex:0 0 auto}
 .sections{display:flex;flex-direction:column;gap:16px;min-width:0}
 .sec-card{background:var(--rock-2);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 18px 16px;scroll-margin-top:150px}
 .sec-card .no{display:inline-block;font-family:var(--px);font-size:12px;letter-spacing:1px;background:var(--diamond);color:#03272A;padding:3px 8px;border:2px solid var(--ink);margin-bottom:10px}
@@ -300,10 +301,10 @@ select{
 .sheet-head{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:flex-start;padding:18px;background:var(--rock-3);border-bottom:3px solid var(--ink)}
 .sheet-head .ico{width:64px;height:64px;font-size:24px}
 .sh-title{flex:1;min-width:0}
-.sh-title h2{font-family:var(--px);font-size:19px;letter-spacing:1px;line-height:1.4;color:var(--text);word-break:break-word}
+.sh-title h2{font-family:var(--px);font-size:24px;letter-spacing:1px;line-height:1.4;color:var(--text);word-break:break-word}
 .sh-title .en{font-size:12px;color:#8B949B;letter-spacing:1px;margin-top:2px}
 .sh-title .alias{font-size:12px;color:var(--diamond);margin-top:6px;word-break:break-word;white-space:pre-line}
-.close-btn{flex:0 0 40px;width:40px;height:40px;display:grid;place-items:center;background:var(--rock-d);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:var(--px);font-size:16px;color:var(--text)}
+.close-btn{flex:0 0 40px;width:40px;height:40px;display:grid;place-items:center;background:var(--rock-d);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:var(--px);font-size:12px;color:var(--text)}
 .close-btn:hover{background:var(--dirt);color:#fff}
 /* 复制条目链接：和关闭键同一套像素按钮语言，略窄 */
 .link-btn{flex:0 0 auto;height:40px;padding:0 12px;display:grid;place-items:center;background:var(--rock-d);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:var(--px);font-size:12px;letter-spacing:1px;color:var(--text)}
@@ -312,21 +313,21 @@ select{
 .sheet-body{padding:18px}
 .craft-area{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px}
 .craft-grid-wrap{flex:0 0 auto}
-.craft-label{font-family:var(--px);font-size:10.5px;letter-spacing:1px;color:var(--diamond);margin-bottom:8px}
+.craft-label{font-family:var(--sans);font-size:11px;letter-spacing:1px;color:var(--diamond);margin-bottom:8px}
 .craft-grid{display:grid;grid-template-columns:repeat(3,var(--cell,62px));grid-template-rows:repeat(3,var(--cell,62px));gap:3px;background:#0B0D0F;border:3px solid var(--ink);padding:3px}
 .cell{display:grid;place-items:center;background:var(--rock-d);border:2px solid #000;position:relative}
 .cell.filled{background:#3A4046}
-.cell .ico.sm{width:calc(var(--cell,62px) - 12px);height:calc(var(--cell,62px) - 12px);font-size:15px;box-shadow:none;border-width:0}
+.cell .ico.sm{width:calc(var(--cell,62px) - 12px);height:calc(var(--cell,62px) - 12px);font-size:12px;box-shadow:none;border-width:0}
 .cell .void{width:60%;height:60%;background:repeating-linear-gradient(45deg,#20242a 0 6px,#262b31 6px 12px)}
 .mats-col{flex:1 1 220px;min-width:0}
 .mat-list{list-style:none;display:flex;flex-direction:column;gap:6px}
 .mat-list li{display:flex;align-items:center;gap:8px;font-size:13px;color:#C7CDD2;background:var(--rock-d);padding:7px 10px;border-left:4px solid var(--grass);word-break:break-word}
-.mat-list li b{font-family:var(--px);font-size:10px;color:var(--diamond)}
+.mat-list li b{font-family:var(--px);font-size:12px;color:var(--diamond)}
 .proc-list{list-style:none;display:flex;flex-direction:column;gap:5px}
 .proc-list li{font-size:13px;color:#C7CDD2;background:var(--rock-d);padding:7px 10px;border-left:4px solid var(--diamond);word-break:break-word}
 .proc-note{margin-top:8px;font-size:11.5px;color:#8A8F91;line-height:1.7}
 .info-block{margin-top:14px}
-.info-block h4{font-family:var(--px);font-size:11px;letter-spacing:1px;color:var(--diamond);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.info-block h4{font-family:var(--sans);font-size:12px;letter-spacing:1px;color:var(--diamond);margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .info-block h4::after{content:"";flex:1;height:3px;background:repeating-linear-gradient(90deg,#3A4046 0 8px,transparent 8px 16px)}
 .info-block p{font-size:13.5px;color:#C7CDD2;line-height:1.9;word-break:break-word;white-space:pre-line}
 /* 无序合成：不画 9 宫格，改成一行材料条，避免视觉上宣称「排布有意义」 */
@@ -463,17 +464,17 @@ select{
         <div class="sec-line"></div>
         <div class="grid-3">
           <div class="card">
-            <h3 style="font-family:var(--px);font-size:13px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">01 / 物品图鉴</h3>
+            <h3 style="font-family:var(--px);font-size:12px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">01 / 物品图鉴</h3>
             <p style="font-size:13px;color:var(--muted);line-height:1.8">按中文名、英文名、别名、拼音全拼或首字母搜索，点开看合成与效果。</p>
             <p style="margin-top:14px"><button class="btn sm" data-go="items" type="button">去看看</button></p>
           </div>
           <div class="card">
-            <h3 style="font-family:var(--px);font-size:13px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">02 / 合成速查</h3>
+            <h3 style="font-family:var(--px);font-size:12px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">02 / 合成速查</h3>
             <p style="font-size:13px;color:var(--muted);line-height:1.8">手里只有一堆材料？选一个材料，立刻知道它能做出哪些东西。</p>
             <p style="margin-top:14px"><button class="btn sm ghost" data-go="recipes" type="button">反查配方</button></p>
           </div>
           <div class="card">
-            <h3 style="font-family:var(--px);font-size:13px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">03 / 玩法攻略</h3>
+            <h3 style="font-family:var(--px);font-size:12px;letter-spacing:1px;color:var(--diamond);margin-bottom:10px">03 / 玩法攻略</h3>
             <p style="font-size:13px;color:var(--muted);line-height:1.8">七条专属路线，从第一棵树到末地，按编号一步步走。</p>
             <p style="margin-top:14px"><button class="btn sm ghost" data-go="guides" type="button">读攻略</button></p>
           </div>
