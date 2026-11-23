@@ -7,9 +7,11 @@
 /guides.js
 /og.png
 /icons/
+/fonts/
 
 # 本地工作产物：反编译输出、贴图池、备份、探针截图
 tools/
+fontwork/
 _probe/
 _sf/
 _rl/
@@ -21,6 +23,8 @@ _backup_原始/
 *.json
 !/README.md
 !docs/README.md
+# 字体许可必须随字体发布（OFL-1.1 要求），文档类的 *.txt 通配不能把它挡掉
+!docs/fonts/OFL.txt
 
 # 备份与探针
 _items_before_*.js

@@ -22,13 +22,17 @@ Minecraft 1.6.4 整合包「德爷生存」（Better Than Wolves Community Editi
 
 配方、材料名与加工方式均来自对 `btwce-3.1.1.jar` 内 class 文件的反编译核对，以及 BTW 官方百科 wiki.btwce.com 的条目比对，不写猜测值。游戏素材版权归原模组及原作者所有，本仓库仅作中文资料整理。
 
+## 字体
+
+标题用 [Fusion Pixel Font](https://github.com/TakWolf/fusion-pixel-font) 12px 等宽体（作者 TakWolf 与贡献者），SIL Open Font License 1.1。站点只打包了本站用到的字符子集（`docs/fonts/pixel.woff2`，约 43 KB），许可原件随附在 `docs/fonts/OFL.txt`。
+
 ## 目录与更新流程
 
 站点产物在 `docs/`（Pages 从该目录出站），制作现场（反编译输出、贴图池、脚本）在本地不入库。
 
 ```bash
 node tools/build-dist.js --user=yuyu123456608 --repo=btw-ce-cn-guide   # 重建 docs/，写入绝对 og URL
-node tools/verify.js                                                  # 28 条断言，不过不许提交
+node tools/verify.js                                                  # 29 条断言，不过不许提交
 git add . && git commit -m "..." && git push
 ```
 

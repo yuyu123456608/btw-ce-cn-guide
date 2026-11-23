@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- dist-built: 2026-11-23T15:50:20Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
+<!-- dist-built: 2026-11-23T15:58:43Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>德爷生存 · Better Than Wolves 中文图鉴站</title>
@@ -21,6 +21,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://yuyu123456608.github.io/btw-ce-cn-guide/og.png">
 <style>
+/* 像素字体：随站打包（Fusion Pixel 12px Monospaced 子集，OFL-1.1）。
+   仅含本站用到的字符，43 KB；许可原件见 fonts/OFL.txt。 */
+@font-face{
+  font-family:"BTW Pixel";
+  src:url("fonts/pixel.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
 /* ============================================================
    0. 变量与基础重置
    ============================================================ */
@@ -31,8 +38,9 @@
   --diamond:#33C0C4; --diamond-d:#1F8A8D;
   --rock:#23262A;  --rock-2:#2B2F34; --rock-3:#33383E; --rock-d:#15171B;
   --ink:#0B0D0F;   --text:#EDEAE1;  --muted:#9AA3AA;
-  /* 像素字体全部为本地降级方案，不联网加载 */
-  --px:"Zpix","Fusion Pixel 12px","Press Start 2P","Silkscreen","DotGothic16","WenQuanYi Bitmap Song",monospace;
+  /* 标题字体：站内打包的像素字体（BTW Pixel，Fusion Pixel 子集）；
+     后面的系统字体只是没覆盖到新字符时的兜底，本机没装也不影响显示 */
+  --px:"BTW Pixel","Zpix","Fusion Pixel 12px","Press Start 2P","Silkscreen","DotGothic16","WenQuanYi Bitmap Song",monospace;
   --sans:"Source Han Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -91,7 +99,7 @@ button{font-family:inherit;color:inherit}
 .view.on{display:block}
 .section{padding:46px 0 10px}
 .sec-head{display:flex;align-items:flex-end;gap:14px;margin-bottom:20px;flex-wrap:wrap}
-.sec-title{font-family:var(--px);font-size:22px;letter-spacing:2px;line-height:1.4;text-shadow:3px 3px 0 #000;color:var(--text)}
+.sec-title{font-family:var(--px);font-size:24px;letter-spacing:2px;line-height:1.4;text-shadow:3px 3px 0 #000;color:var(--text)}
 .sec-title em{font-style:normal;color:var(--diamond)}
 .sec-sub{font-size:13px;color:var(--muted);padding-bottom:4px}
 .sec-line{height:4px;background:repeating-linear-gradient(90deg,var(--grass) 0 12px,transparent 12px 24px);border-top:2px solid var(--ink);margin:0 0 24px}
@@ -142,7 +150,7 @@ button{font-family:inherit;color:inherit}
   border:3px solid var(--diamond);margin-bottom:22px;
 }
 .hero h1{
-  position:relative;z-index:2;font-family:var(--px);font-size:clamp(36px,8vw,74px);
+  position:relative;z-index:2;font-family:var(--px);font-size:clamp(36px,8vw,72px);
   line-height:1.18;letter-spacing:6px;color:#FBFFF7;margin-bottom:14px;
   text-shadow:3px 0 0 var(--ink),-3px 0 0 var(--ink),0 3px 0 var(--ink),0 -3px 0 var(--ink),6px 6px 0 var(--ink),9px 9px 0 rgba(0,0,0,.45);
 }
