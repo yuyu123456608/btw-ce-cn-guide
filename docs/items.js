@@ -33,7 +33,7 @@
    并重新跑数据校验。
    -------------------------------------------------------------------------- */
 
-window.BTW_ITEMS_SHOWN = 141; // 已上图鉴条数 = window.BTW_ITEMS.length（不含归档；旧名 BTW_ITEMS_TOTAL 语义有歧义，已改名）
+window.BTW_ITEMS_SHOWN = 141; // 已上图鉴条数 = window.BTW_ITEMS.length（不含归档）
 
 window.BTW_ITEMS = [
 
