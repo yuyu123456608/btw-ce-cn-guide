@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- dist-built: 2026-11-23T15:37:30Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
+<!-- dist-built: 2026-11-23T15:50:20Z · https://yuyu123456608.github.io/btw-ce-cn-guide/ -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>德爷生存 · Better Than Wolves 中文图鉴站</title>
@@ -297,6 +297,10 @@ select{
 .sh-title .alias{font-size:12px;color:var(--diamond);margin-top:6px;word-break:break-word;white-space:pre-line}
 .close-btn{flex:0 0 40px;width:40px;height:40px;display:grid;place-items:center;background:var(--rock-d);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:var(--px);font-size:16px;color:var(--text)}
 .close-btn:hover{background:var(--dirt);color:#fff}
+/* 复制条目链接：和关闭键同一套像素按钮语言，略窄 */
+.link-btn{flex:0 0 auto;height:40px;padding:0 12px;display:grid;place-items:center;background:var(--rock-d);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:var(--px);font-size:12px;letter-spacing:1px;color:var(--text)}
+.link-btn:hover{background:var(--green);color:#fff}
+.link-btn.done{background:var(--cyan);color:var(--ink)}
 .sheet-body{padding:18px}
 .craft-area{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px}
 .craft-grid-wrap{flex:0 0 auto}
@@ -628,6 +632,7 @@ select{
         <div class="alias" id="modalAlias"></div>
         <div class="img-note" id="modalImgNote"></div>
       </div>
+      <button class="link-btn" id="modalLink" type="button" aria-label="复制此条目的直达链接">复制链接</button>
       <button class="close-btn" id="modalClose" type="button" aria-label="关闭">×</button>
     </div>
     <div class="sheet-body">
@@ -771,13 +776,28 @@ select{
     window.scrollTo(0, 0);
   }
 
+  /* 统一入口：普通视图走 go()，条目直达走 #item/<id>。
+     解析不出来就退回物品列表——不静默落到首页，也不假装成功。 */
+  function route(raw, push) {
+    var v = String(raw || '').replace(/^#/, '');
+    var m = v.match(/^item\/(.+)$/);
+    if (m) {
+      go('items', false);
+      openItem(decodeURIComponent(m[1]), push === true);
+      return;
+    }
+    closeModal(false);
+    go(v, push);
+  }
+
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-go]');
-    if (t) { e.preventDefault(); go(t.getAttribute('data-go'), true); }
+    if (t) { e.preventDefault(); route(t.getAttribute('data-go'), true); }
   });
 
   window.addEventListener('hashchange', function () {
     var v = (location.hash || '#home').slice(1);
+    if (v.indexOf('item/') === 0) { route(v, false); return; }
     if (VIEWS.indexOf(v) < 0) return; // 攻略目录锚点等，不当作页面切换
     /* 点击导航时视图已切换，这里只处理外部/前进后退的 hash 变化 */
     if (!document.getElementById('view-' + v).classList.contains('on')) {
@@ -961,7 +981,7 @@ select{
   /* 弹层打开时记住触发元素，关闭后焦点回到它——键盘用户不会掉到页面顶部 */
   var lastFocus = null;
 
-  function openItem(id) {
+  function openItem(id, writeHash) {
     var it = ITEMS.filter(function (x) { return x.id === id; })[0];
     if (!it) return;
 
@@ -1062,13 +1082,21 @@ select{
     lastFocus = document.activeElement && document.activeElement !== document.body
       ? document.activeElement : null;
     $('#modalClose').focus();
+    /* 弹层与地址同步：每条目一个可分享的 #item/<id>，刷新/粘贴都能回到同一个弹层 */
+    if (writeHash !== false) {
+      try { if (location.hash !== '#item/' + id) location.hash = 'item/' + encodeURIComponent(id); } catch (e) { /* 忽略 */ }
+    }
   }
 
-  function closeModal() {
+  function closeModal(writeHash) {
     modal.classList.remove('on');
     document.body.style.overflow = '';
     if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
     lastFocus = null;
+    /* 关掉弹层就把地址退回列表页，避免「页面在列表、地址还指着某条目」 */
+    if (writeHash !== false && /^#item\//.test(location.hash)) {
+      try { location.hash = 'items'; } catch (e) { /* 忽略 */ }
+    }
   }
 
   /* 弹层内的焦点循环：Tab / Shift+Tab 只在弹层内来回走，不会跑到背后的列表 */
@@ -1088,6 +1116,32 @@ select{
   });
   $('#modalClose').addEventListener('click', closeModal);
   modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+
+  /* 复制当前条目的直达链接：优先 Clipboard API，被拒或不可用时退到 execCommand */
+  $('#modalLink').addEventListener('click', function () {
+    var btn = $('#modalLink');
+    if (!/^#item\//.test(location.hash)) return;
+    var url = location.origin + location.pathname + location.hash;
+    function done() {
+      btn.classList.add('done');
+      btn.textContent = '已复制';
+      setTimeout(function () { btn.classList.remove('done'); btn.textContent = '复制链接'; }, 1600);
+    }
+    function fallback() {
+      var t = document.createElement('textarea');
+      t.value = url;
+      t.setAttribute('readonly', '');
+      t.style.position = 'fixed';
+      t.style.opacity = '0';
+      document.body.appendChild(t);
+      t.select();
+      try { if (document.execCommand('copy')) done(); } catch (e) { /* 忽略 */ }
+      t.remove();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, fallback);
+    } else fallback();
+  });
   document.addEventListener('keydown', function (e) {
     if (!modal.classList.contains('on')) return;
     if (e.key === 'Escape') { closeModal(); return; }
@@ -1225,7 +1279,7 @@ select{
   $('#progBar').style.width = (TOTAL_ALL ? Math.round(ITEMS.length / TOTAL_ALL * 100) : 0) + '%';
 
   renderItems();
-  go((location.hash || '#home').slice(1), false);
+  route(location.hash, false);
 
   /* 吸顶偏移量：导航高度随字号/换行变化（手机上可能两行），写死 62px 会让阅读页顶部栏压住它。
      这里量实际高度写进 --navh，.reader-top 与 .toc 都用它。 */
